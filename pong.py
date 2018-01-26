@@ -67,14 +67,14 @@ class BALL():
         self.movedir = [4,3]
     def move(self):
         self.pos += self.movedir/np.linalg.norm(self.movedir)*self.velMax
-        for i in range(2):
-            self.pos[i] = int(self.pos[i]+0.5)
         if self.pos[1] < 0:
             self.pos[1] = -self.pos[1]
             self.movedir[1] = -self.movedir[1]
         if self.pos[1] > WINDOWHEIGHT:
             self.pos[1] = 2 * WINDOWHEIGHT - self.pos[1]
             self.movedir[1] = -self.movedir[1]
+        for i in range(2):
+            self.pos[i] = int(self.pos[i]+0.5)
     def draw(self):
         rectangle(self.pos,self.pos+self.size)
 
@@ -88,8 +88,12 @@ ball = BALL()
 score = [0,0]
 
 def line(start_pos,end_pos):
+    sx = start_pos[0]
+    sy = start_pos[1]
+    ex = end_pos[0]
+    ey = end_pos[1]
     if OSZI:
-        ser.write(((start_pos[0]<<48)+(start_pos[1]<<32)+(end_pos[0]<<16)+(end_pos[1])).to_bytes(8,'big'))
+        ser.write(((sx<<48)+(sy<<32)+(ex<<16)+(ey)).to_bytes(8,'big'))
     pygame.draw.line(DISPLAYSURF,LINECOLOR,start_pos,end_pos)
 
 def rectangle(upLeft,downRight):
