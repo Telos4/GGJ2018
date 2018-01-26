@@ -1,27 +1,33 @@
 import pygame, sys
 from pygame.locals import *
-import serial
-
-ser=serial.Serial('/dev/ttyACM0', 115200, timeout=10)
-
-
-def line(a,b,c,d):
-    ser.write(((a<<48)+(b<<32)+(c<<16)+(d)).to_bytes(8,'big'))
-    return
-
-def clearscreen():
-    line(65535,0,0,0)
-
-
-
 OSZI = False # outbut is Oszi or Pygame
+if OSZI:
+    import serial
+
+
 pygame.init()
 
 BGCOLOR = (100,50,50)
+LINECOLOR = (000,255,000)
 WINDOWHEIGHT = 400
 WINDOWWIDTH = 400
 pos = [WINDOWWIDTH//2,WINDOWHEIGHT//2]
-length = 400
+length = 100
+
+
+if OSZI:
+    ser=serial.Serial('/dev/ttyACM0', 115200, timeout=10)
+
+
+def line(start_pos,end_pos):
+    if OSZI:
+        ser.write(((start_pos[0]<<48)+(start_pos[1]<<32)+(end_pos[0]<<16)+(end_pos[1])).to_bytes(8,'big'))
+    pygame.draw.line(DISPLAYSURF,LINECOLOR,start_pos,end_pos)
+
+def clearscreen():
+    line([65535,0],[0,0])
+
+
 
 def terminate():
     pygame.quit()
@@ -29,7 +35,7 @@ def terminate():
 
 def drawPlayer():
     clearscreen()
-    line(pos[0],pos[1],pos[0]+length,pos[1]+length)
+    line(pos,[pos[0]+length,pos[1]+length])
 
 
 DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH , WINDOWHEIGHT))
@@ -43,6 +49,8 @@ while True:
             pos[0] += 5;
             pos[1] += 5;
     drawPlayer()
+    pygame.display.update()
 
 
-ser.close()
+if OSZI:
+    ser.close()
