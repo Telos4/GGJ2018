@@ -3,7 +3,7 @@ from pygame.locals import *
 import subprocess
 import serial
 
-ser=serial.Serial('/dev/cu.usbmodem3297371', 115200, timeout=10)
+ser=serial.Serial('/dev/ttyACM0', 115200, timeout=10)
 
 
 def line(a,b,c,d):
@@ -19,10 +19,11 @@ pygame.init()
 
 BGCOLOR = (100,50,50)
 pos = [200,200]
+length = 400
 
 def drawPlayer():
-    clearscreen()
-    line(pos[0],pos[1],pos[0]+30,pos[1]+30)
+    #clearscreen()
+    line(pos[0],pos[1],pos[0]+length,pos[1]+length)
 
 
 
@@ -30,6 +31,7 @@ def drawPlayer():
 while True:
     for event in pygame.event.get():
         if event.type == KEYDOWN:
+            print("keydown")
             pos[0] += 5;
             pos[1] += 5;
     drawPlayer()
