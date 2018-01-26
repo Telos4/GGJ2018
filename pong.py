@@ -18,10 +18,14 @@ OSZI = False # outbut is Oszi or Pygame
 pygame.init()
 
 BGCOLOR = (100,50,50)
-WINDOWHEIGHT = 4000
-WINDOWWIDTH = 4000
+WINDOWHEIGHT = 400
+WINDOWWIDTH = 400
 pos = [WINDOWWIDTH//2,WINDOWHEIGHT//2]
 length = 400
+
+def terminate():
+    pygame.quit()
+    sys.exit()
 
 def drawPlayer():
     clearscreen()
@@ -32,6 +36,8 @@ DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH , WINDOWHEIGHT))
 
 while True:
     for event in pygame.event.get():
+        if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
+            terminate()
         if event.type == KEYDOWN:
             print("keydown")
             pos[0] += 5;
