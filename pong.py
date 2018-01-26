@@ -37,9 +37,9 @@ DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH , WINDOWHEIGHT))
 
 while True:
     for event in pygame.event.get():
+        if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
+            terminate()
         if event.type == KEYDOWN:
-            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
-                terminate()
             print("keydown")
             pos[0] += 5;
             pos[1] += 5;
