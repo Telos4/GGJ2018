@@ -1,12 +1,13 @@
 import pygame, sys
 from pygame.locals import *
-import subprocess
 
 OSZI = False # outbut is Oszi or Pygame
 pygame.init()
 
 BGCOLOR = (100,50,50)
-pos = [200,200]
+WINDOWHEIGHT = 4000
+WINDOWWIDTH = 4000
+pos = [WINDOWWIDTH/2,WINDOWHEIGHT/2]
 
 def drawPlayer():
     line(pos[0],pos[1],pos[0]+30,pos[1]+30)
