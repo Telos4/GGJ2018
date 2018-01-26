@@ -24,7 +24,6 @@ pos = [WINDOWWIDTH//2,WINDOWHEIGHT//2]
 length = 400
 
 def terminate():
-    subprocess.call("killall -s 9 python2",shell=True)
     pygame.quit()
     sys.exit()
 
