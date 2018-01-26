@@ -88,10 +88,10 @@ ball = BALL()
 score = [0,0]
 
 def line(start_pos,end_pos):
-    sx = start_pos[0]
-    sy = start_pos[1]
-    ex = end_pos[0]
-    ey = end_pos[1]
+    sx = int(start_pos[0])
+    sy = int(start_pos[1])
+    ex = int(end_pos[0])
+    ey = int(end_pos[1])
     if OSZI:
         ser.write(((sx<<48)+(sy<<32)+(ex<<16)+(ey)).to_bytes(8,'big'))
     pygame.draw.line(DISPLAYSURF,LINECOLOR,start_pos,end_pos)
