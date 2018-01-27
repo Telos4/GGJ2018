@@ -48,7 +48,7 @@ if __name__ == "__main__":
 #    drscore = text_renderer.WORD(strscore,1)
 
 
-while True:    
+while True:
     for event in pygame.event.get():
         if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
             ponggame.terminate()
@@ -65,7 +65,6 @@ while True:
     #     if i == 9:
     #         text_renderer.WORD("GAMEOVER",3)
     #         ball.velMax = 0
-    
     #text_renderer.WORD("GLOBALGAMEJAM",3)
     #pygame.display.update()
-    time.sleep(1/60)
+    time.sleep(1/160)
