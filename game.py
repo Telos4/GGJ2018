@@ -85,20 +85,29 @@ class Pong(Game):
             o.move()
         self.ball.move(self.obstacleList)
 
-        if self.ball.pos[0] < 0:
-            if self.ball.pos[1] in range(self.players[0].pos[1], self.players[0].pos[1] + self.renderer.barsize):
-                self.ball.pos[0] = -self.ball.pos[0]
-                self.ball.movedir[0] = -self.ball.movedir[0]
-                self.ball.vel *= 1.5
-            else:
-                self.afterScore(0)
-        if self.ball.pos[0] > self.renderer.windowwidth:
-            if self.ball.pos[1] in range(self.players[1].pos[1], self.players[1].pos[1] + self.renderer.barsize):
-                self.ball.pos[0] = 2 * self.renderer.windowwidth - self.ball.pos[0]
-                self.ball.movedir[0] = -self.ball.movedir[0]
-                self.ball.vel *= 1.5
-            else:
-                self.afterScore(1)
+        for player in range(2):
+            behind = False
+            if player == 0:
+                if self.ball.pos[0] < 0:
+                    behind = True
+            if player == 1:
+                if self.ball.pos[0] > self.renderer.windowwidth:
+                    behind = True
+            if behind:
+                y0 = self.ball.pos[1]-(self.ball.pos[0]-player*self.renderer.windowwidth)*self.ball.movedir[1]/self.ball.movedir[0]
+                ypl = self.players[player].pos[1]
+                if  ypl < y0 < ypl+self.renderer.barsize:
+                    self.ball.movedir = self.velAfterCollisionPlayer(player,y0)
+                    self.ball.pos = np.array([player*self.renderer.windowwidth,y0])
+                else:
+                    self.afterScore(player)
+
+    def velAfterCollisionPlayer(self,player,y0):
+                #y0 = self.ball.pos[1]-(self.ball.pos[0]-player*self.renderer.windowwidth)*self.ball.movedir[1]/self.ball.movedir[0]
+                middle = self.players[player].pos[1]+self.renderer.barsize/2
+                nDFM  = (y0-middle)/self.renderer.barsize #normed distance from middle
+                vel = np.array([(1-2*player)*np.cos(np.pi*nDFM),np.sin(np.pi*nDFM)])
+                return vel
 
     def afterScore(self,winner):
                 self.score[winner] += 1
