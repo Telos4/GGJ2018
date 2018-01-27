@@ -57,14 +57,6 @@ while gamerunning:
             for p in ponggame.players:
                 if event.key in p.controls:
                     p.changeVel(-1, event.key)
-    for i in ponggame.score:
-        if i == 2:
-            ponggame.text_renderer.WORD("GAMEOVER",3)
-            ponggame.ball.velMax = 0
-            #gamerunning = False
-            #time.sleep(10)  
-    ponggame.update() 
-      
-    #text_renderer.WORD("GLOBALGAMEJAM",3)
-    #pygame.display.update()
+
+    ponggame.update()
     time.sleep(1/60)
