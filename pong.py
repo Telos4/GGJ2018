@@ -6,6 +6,7 @@ import numpy as np
 import renderer
 
 playerList = []
+obstacleList = []
 
 leftUp = K_d
 leftDown = K_f
@@ -15,6 +16,17 @@ rightDown = K_j
 
 def random():
     return 2*(np.random.random()-0.5)
+
+class OBSTACLE:
+    start = []
+    end = []
+    def __init__(self,renderer,start,end):
+        self.renderer = renderer
+        self.start = start
+        self.end = end
+    def draw(self):
+        self.renderer.line(self.start,self.end)
+
 
 class PLAYER:
     pos = []
@@ -46,18 +58,50 @@ class PLAYER:
     def draw(self):
         self.renderer.line(self.pos,[self.pos[0],self.pos[1]+self.renderer.barsize])
 
+
 class BALL():
     pos = []
     size = [5,5]
     movedir = [0,0]
-    velBallDefault = 10
+    velBallDefault = 20
     velMax = velBallDefault
     def __init__(self, renderer):
         self.renderer = renderer
         self.pos = np.array([self.renderer.windowwidth/2,self.renderer.windowheight/2])
         self.movedir = np.array([random(),random()])
+        self.movedir = np.array([-1,-0.5])
     def move(self):
-        self.pos += self.movedir/np.linalg.norm(self.movedir)*self.velMax
+        posOld = self.pos
+        posNew = posOld + self.movedir/np.linalg.norm(self.movedir)*self.velMax
+        # collision with obstacles:
+        u0 = posOld[0]
+        v0 = posOld[1]
+        u1 = posNew[0]
+        v1 = posNew[1]
+        mb = (v1-v0)/(u1-u0)
+        for obst in obstacleList:
+            x0 = obst.start[0]
+            y0 = obst.start[1]
+            x1 = obst.end[0]
+            y1 = obst.end[1]
+            mo = (y1-y0)/(x1-x0)
+            x = (y0-v0+mb*u0-mo*x0)/(mb-mo)
+            y = y0 + mo*(x-x0)
+            cross = np.array([x,y])
+            if min(u0,u1) < x < max(u0,u1):
+                if min(y0,y1) < y < max(y0,y1):
+                    a = posNew-cross
+                    b = np.array([x1-x0,y1-y0])
+                    b = b/np.linalg.norm(b)
+                    X = np.dot(a,b)*b
+                    posMirror = 2*cross+2*X-posNew
+                    posNew = posMirror
+                    self.movedir = posMirror-cross
+                    self.velMax *= 1.1
+
+        self.pos = posNew
+
+        # collision with walls:
         if self.pos[1] < 0:
             self.pos[1] = -self.pos[1]
             self.movedir[1] = -self.movedir[1]
@@ -85,6 +129,8 @@ def drawGame(renderer):
     for player in playerList:
         player.draw()
     ball.draw()
+    for obst in obstacleList:
+        obst.draw()
 
 def doGameStep(renderer):
     global ball
@@ -140,6 +186,7 @@ if __name__ == "__main__":
     playerList.append(PLAYER(False, renderer))
     ball = BALL(renderer)
     score = [0, 0]
+    obstacleList.append(OBSTACLE(renderer,np.array([400,300]),np.array([900,2000])))
 
     while True:
         for event in pygame.event.get():
