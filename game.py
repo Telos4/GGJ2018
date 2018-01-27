@@ -87,28 +87,28 @@ class Pong(Game):
                 self.ball.movedir[0] = -self.ball.movedir[0]
                 self.ball.velMax *= 1.1
             else:
-                self.score[0] += 1
-                start = np.array([np.random.randint(0,self.renderer.windowwidth),np.random.randint(0,self.renderer.windowheight)])
-                end = np.array([np.random.randint(0,self.renderer.windowwidth),np.random.randint(0,self.renderer.windowheight)])
-                self.obstacleList.append(OBSTACLE(self.renderer,start,end))
-                self.ball.reset([-1, random()])
-                self.drawscore()
-                pygame.display.update()
-                time.sleep(3)
+                self.afterScore(0)
         if self.ball.pos[0] > self.renderer.windowwidth:
             if self.ball.pos[1] in range(self.players[1].pos[1], self.players[1].pos[1] + self.renderer.barsize):
                 self.ball.pos[0] = 2 * self.renderer.windowwidth - self.ball.pos[0]
                 self.ball.movedir[0] = -self.ball.movedir[0]
                 self.ball.velMax *= 1.1
             else:
-                self.score[1] += 1
-                start = np.array([np.random.randint(0,self.renderer.windowwidth),np.random.randint(0,self.renderer.windowheight)])
-                end = np.array([np.random.randint(0,self.renderer.windowwidth),np.random.randint(0,self.renderer.windowheight)])
+                self.afterScore(1)
+
+    def afterScore(self,winner):
+                self.score[winner] += 1
+                ww = self.renderer.windowwidth
+                start = np.array([np.random.randint(ww/3,ww*2./3.),np.random.randint(ww/3,2*ww/3.)])
+                dir = np.array([random(),random()])
+                length = ww/3
+                end = start + length*dir/np.linalg.norm(dir)
                 self.obstacleList.append(OBSTACLE(self.renderer,start,end))
-                self.ball.reset([1, random()])
+                self.ball.reset([-1+2*winner, random()])
                 self.drawscore()
                 pygame.display.update()
                 time.sleep(3)
+
 
     def update(self):
         self.doGameStep()
