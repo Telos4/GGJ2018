@@ -69,6 +69,7 @@ class Pong(Game):
 
         self.ball = BALL(renderer=renderer)
         self.objects.append(self.ball)
+        self.obstacleList = []
 
 
     def terminate(self):
@@ -78,7 +79,7 @@ class Pong(Game):
     def doGameStep(self):
         for p in self.players:
             p.move()
-        self.ball.move()
+        self.ball.move(self.obstacleList)
 
         if self.ball.pos[0] < 0:
             if self.ball.pos[1] in range(self.players[0].pos[1], self.players[0].pos[1] + self.renderer.barsize):
