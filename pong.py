@@ -37,9 +37,30 @@ if __name__ == "__main__":
     ponggame = Pong(renderer)
     pass
 
-
+splashscreen = True
 gamerunning = True
 while gamerunning:
+    if splashscreen == True:
+        sound = pygame.mixer.Sound("GGJ18.wav")
+        sound.play()
+        ponggame.text_renderer.WORD("GLOBALGAMEJAM",2)
+        ponggame.text_renderer.WORD("2018",3)
+        pygame.display.update()
+        time.sleep(15)
+        renderer.clearscreen()
+        ponggame.text_renderer.WORD("3",3)
+        pygame.display.update()
+        time.sleep(1)
+        renderer.clearscreen()
+        ponggame.text_renderer.WORD("2",3)
+        pygame.display.update()
+        time.sleep(1)
+        renderer.clearscreen()
+        ponggame.text_renderer.WORD("1",3)
+        pygame.display.update()
+        time.sleep(1)
+        splashscreen = False
+
     for event in pygame.event.get():
         if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
             ponggame.terminate()
@@ -53,5 +74,6 @@ while gamerunning:
                     p.changeVel(-1, event.key)
 
     gamerunning = ponggame.update()
+
     time.sleep(1/60)
 
