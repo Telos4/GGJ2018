@@ -37,43 +37,45 @@ if __name__ == "__main__":
     ponggame = Pong(renderer)
     pass
 
-splashscreen = True
-gamerunning = True
-while gamerunning:
-    if splashscreen == True:
-        sound = pygame.mixer.Sound("GGJ18.wav")
-        sound.play()
-        ponggame.text_renderer.WORD("GLOBALGAMEJAM",2)
-        ponggame.text_renderer.WORD("2018",3)
-        pygame.display.update()
-        time.sleep(15)
-        renderer.clearscreen()
-        ponggame.text_renderer.WORD("3",3)
-        pygame.display.update()
-        time.sleep(1)
-        renderer.clearscreen()
-        ponggame.text_renderer.WORD("2",3)
-        pygame.display.update()
-        time.sleep(1)
-        renderer.clearscreen()
-        ponggame.text_renderer.WORD("1",3)
-        pygame.display.update()
-        time.sleep(1)
-        splashscreen = False
+    splashscreen = True
+    gamerunning = True
+    while gamerunning:
 
-    for event in pygame.event.get():
-        if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
-            ponggame.terminate()
-        if event.type == KEYDOWN:
-            for p in ponggame.players:
-                if event.key in p.controls:
-                    p.changeVel(1, event.key)
-        if event.type == KEYUP:
-            for p in ponggame.players:
-                if event.key in p.controls:
-                    p.changeVel(-1, event.key)
+        if splashscreen == True:
+            renderer.clearscreen()
+            sound = pygame.mixer.Sound("GGJ18.wav")
+            sound.play()
+            ponggame.text_renderer.WORD("GLOBALGAMEJAM",2)
+            ponggame.text_renderer.WORD("2018",3)
+            pygame.display.update()
+            time.sleep(0.15)
+            renderer.clearscreen()
+            ponggame.text_renderer.WORD("3",3)
+            pygame.display.update()
+            time.sleep(1)
+            renderer.clearscreen()
+            ponggame.text_renderer.WORD("2",3)
+            pygame.display.update()
+            time.sleep(1)
+            renderer.clearscreen()
+            ponggame.text_renderer.WORD("1",3)
+            pygame.display.update()
+            time.sleep(1)
+            splashscreen = False
 
-    gamerunning = ponggame.update()
+        for event in pygame.event.get():
+            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
+                ponggame.terminate()
+            if event.type == KEYDOWN:
+                for p in ponggame.players:
+                    if event.key in p.controls:
+                        p.changeVel(1, event.key)
+            if event.type == KEYUP:
+                for p in ponggame.players:
+                    if event.key in p.controls:
+                        p.changeVel(-1, event.key)
 
-    time.sleep(1/60)
+        gamerunning = ponggame.update()
+
+        time.sleep(1/60)
 
