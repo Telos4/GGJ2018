@@ -5,28 +5,7 @@ import numpy as np
 
 import renderer
 
-OSZI = False
-ser = None
-try:
-    oszi_params = open('oszi_params.txt', 'r')
-    print(oszi_params)
 
-    import serial
-    for line in oszi_params:
-        if line[0] != "#":
-            try:
-                serial_port = line.rstrip()
-                ser = serial.Serial(serial_port, 115200, timeout=10)
-                OSZI = True
-                break
-            except:
-                print("trying next configuration")
-except:
-    print("Oscilloscope not connected!")
-
-
-
-renderer = renderer.Renderer(serial=ser, oszi=OSZI)
 
 playerList = []
 
@@ -94,7 +73,7 @@ class BALL():
     def reset(self,dir):
         self.pos = [self.renderer.windowheight/2,self.renderer.windowheight/2]
         self.movedir = dir
-        self.velMax = velBallDefault
+        self.velMax = self.velBallDefault
 
 
 
@@ -141,6 +120,29 @@ def doGameStep(renderer):
 
 
 if __name__ == "__main__":
+
+    oszi = False
+    ser = None
+    try:
+        oszi_params = open('oszi_params.txt', 'r')
+        print(oszi_params)
+
+        import serial
+
+        for line in oszi_params:
+            if line[0] != "#":
+                try:
+                    serial_port = line.rstrip()
+                    ser = serial.Serial(serial_port, 115200, timeout=10)
+                    oszi = True
+                    break
+                except:
+                    print("trying next configuration")
+    except:
+        print("Oscilloscope not connected!")
+
+    renderer = renderer.Renderer(serial=ser, oszi=oszi)
+
     while True:
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
