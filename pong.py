@@ -4,6 +4,7 @@ import time
 import numpy as np
 
 import renderer
+import letters
 
 playerList = []
 
@@ -90,7 +91,7 @@ def doGameStep(renderer):
     global ball
     global score
     for p in playerList:
-        p.move()
+        p.move() 
     ball.move()
     if ball.pos[0] < 0:
         if ball.pos[1] in range(playerList[0].pos[1],playerList[0].pos[1]+renderer.barsize):
@@ -132,29 +133,35 @@ if __name__ == "__main__":
                     print("trying next configuration")
     except:
         print("Oscilloscope not connected!")
-
     renderer = renderer.Renderer(serial=ser, oszi=oszi)
-
     # init Game
     playerList.append(PLAYER(True, renderer))
     playerList.append(PLAYER(False, renderer))
     ball = BALL(renderer)
     score = [0, 0]
 
-    while True:
-        for event in pygame.event.get():
-            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
-                terminate()
-            if event.type == KEYDOWN:
-                for p in playerList:
-                    if event.key in p.controls:
-                        p.changeVel(1, event.key)
-            if event.type == KEYUP:
-                for p in playerList:
-                    if event.key in p.controls:
-                        p.changeVel(-1, event.key)
+    text_renderer = letters.TEXT(renderer)
+    pass
 
-        doGameStep(renderer)
-        drawGame(renderer)
-        pygame.display.update()
-        time.sleep(1/60)
+def drawscore():
+    strscore = str(score[1])+":"+str(score[0])
+    drscore = text_renderer.WORD(strscore,1)
+
+
+while True:    
+    for event in pygame.event.get():
+        if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
+            terminate()
+        if event.type == KEYDOWN:
+            for p in playerList:
+                if event.key in p.controls:
+                    p.changeVel(1, event.key)
+        if event.type == KEYUP:
+            for p in playerList:
+                if event.key in p.controls:
+                    p.changeVel(-1, event.key)
+    doGameStep(renderer)
+    drawGame(renderer)
+    drawscore()
+    pygame.display.update()
+    time.sleep(1/60)
