@@ -100,6 +100,12 @@ class Pong(Game):
         self.doGameStep()
         self.render()
         self.drawscore()
+
+        for i in self.score:
+            if i == 0:
+                self.text_renderer.WORD("GAMEOVEROVEROVE", 3)
+                self.ball.velMax = 500
+
         pygame.display.update()
 
     def drawscore(self):
