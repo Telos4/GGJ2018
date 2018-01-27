@@ -38,8 +38,7 @@ if __name__ == "__main__":
     # init Game
     ponggame = Pong(renderer)
     pass
-
-    splashscreen = False
+    splashscreen = True
     gamerunning = True
     while gamerunning:
         t_end = time.time() + 5
@@ -53,6 +52,8 @@ if __name__ == "__main__":
                     renderer.clearscreen()
                     ponggame.text_renderer.WORD("GLOBALGAMEJAM",2)
                     ponggame.text_renderer.WORD("2018",3)
+                    #ponggame.text_renderer.WORD("CREDITS: CLEMENS DANIEL NICO SIMON SOFIE STEPHAN", 4)
+                    #ponggame.text_renderer.WORD("CREDITS: CDNSSS", 4)
                     for n in range(0,40):
                         value.append([n*100,int(math.sin(n*0.5+0.01*t)*500)+3000])
                     for n in range(0,39):
