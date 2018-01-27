@@ -1,0 +1,1 @@
+rxB0 * pyB0 - pxB0 * ryB0 + rxS0 * pyS0 - pxS0 * ryS0 + I * omega0 = rxB1 * pyB1 - pxB1 * ryB1 + rxS1 * pyS1 - pxS1 * ryS1 + I * omega1,  (vxB0^2+vyB0^2) + m * (vxS0^2 + vyS0^2) + I/m_
