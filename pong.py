@@ -15,6 +15,7 @@ rightDown = K_j
 
 if __name__ == "__main__":
 
+    obstaclebool = False
     oszi = False
     ser = None
     try:
@@ -36,13 +37,15 @@ if __name__ == "__main__":
         print("Oscilloscope not connected!")
     renderer = renderer.Renderer(serial=ser, oszi=oszi)
     # init Game
-    ponggame = Pong(renderer)
+    ponggame = Pong(renderer,obstaclebool)
     pass
 
-    splashscreen = False
+    splashscreen = True
     gamerunning = True
+    modscreen = True
+
     while gamerunning:
-        t_end = time.time() + 5
+        t_end = time.time() + 1
         if splashscreen == True:
             renderer.clearscreen()
             sound = pygame.mixer.Sound("GGJ18.wav")
@@ -62,6 +65,39 @@ if __name__ == "__main__":
                
             #time.sleep(5)
 
+
+            #Hilfsscreen
+            renderer.clearscreen()
+            ponggame.text_renderer.WORD("PLAYER 1",1)
+            ponggame.text_renderer.WORD("UP D  DOWN F",2)
+            ponggame.text_renderer.WORD("PLAYER 2",4)
+            ponggame.text_renderer.WORD("UP J  DOWN K",5)
+            pygame.display.update()
+            time.sleep(5)
+
+            #Modscreen
+            pygame.event.clear()
+            
+            while modscreen == True:
+                renderer.clearscreen()
+                ponggame.text_renderer.WORD("MODS",1)
+                ponggame.text_renderer.WORD("NORMAL 1",3)
+                ponggame.text_renderer.WORD("OBSTACLES 2",4)
+                #ponggame.text_renderer.WORD("OBSTACLES SQUARES   3",4)
+                pygame.display.update()
+                #event = pygame.event.wait()
+                for event in pygame.event.get():
+                    if event.type == KEYUP and event.key == K_1:
+                        obstaclebool = False
+                        modscreen = False
+                        
+                    elif event.type == KEYUP and event.key == K_2:
+                        obstaclebool = True
+                        modscreen = False
+
+
+            ponggame = Pong(renderer,obstaclebool)
+            pass
 
             renderer.clearscreen()
             ponggame.text_renderer.WORD("3",3)
