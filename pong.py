@@ -163,5 +163,11 @@ while True:
     doGameStep(renderer)
     drawGame(renderer)
     drawscore()
+    for i in score:
+        if i == 9:
+            text_renderer.WORD("GAMEOVER",3)
+            ball.velMax = 0
+    
+    #text_renderer.WORD("GLOBALGAMEJAM",3)
     pygame.display.update()
     time.sleep(1/60)

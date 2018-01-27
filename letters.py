@@ -16,6 +16,7 @@ class TEXT():
         self.OX = self.OI
         self.OY = self.OI
 
+
     def A(self):
         self.renderer.line([self.OX,self.OY],[self.OX,self.OY+2*self.LE])
         self.renderer.line([self.OX,self.OY+self.LE],[self.OX+self.LE,self.OY+self.LE])
@@ -195,7 +196,7 @@ class TEXT():
 
     def seven(self):
         self.one()
-        self.renderer.line([self.OX,self.OY],[self.OX,self.OY+self.LE])
+        self.renderer.line([self.OX,self.OY],[self.OX+self.LE,self.OY])
 
     def eight(self):
         self.zero()
