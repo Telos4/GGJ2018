@@ -25,14 +25,10 @@ except:
     print("Oscilloscope not connected!")
 
 
-length = 100
-velBallDefault = 10
 
 renderer = renderer.Renderer(serial=ser, oszi=OSZI)
 
 playerList = []
-playerLeftPos = [0,(renderer.windowheight-renderer.barsize)//2]
-playerRightPos = [renderer.windowwidth-1,(renderer.windowheight-renderer.barsize)//2]
 
 leftUp = K_d
 leftDown = K_f
@@ -49,6 +45,9 @@ class PLAYER:
     controls = []
     vel = 20
     def __init__(self,left, renderer):
+        self.renderer = renderer
+        playerLeftPos = [0,(self.renderer.windowheight-self.renderer.barsize)//2]
+        playerRightPos = [self.renderer.windowwidth-1,(self.renderer.windowheight-self.renderer.barsize)//2]
         movedir = 0
         if left:
             self.pos = playerLeftPos
@@ -56,7 +55,6 @@ class PLAYER:
         else:
             self.pos = playerRightPos
             self.controls = [rightUp,rightDown]
-        self.renderer = renderer
     def changeVel(self,dir,key):
         if key == self.controls[0]: #accelerate up
             self.movedir -= 1*dir
@@ -75,6 +73,7 @@ class BALL():
     pos = []
     size = [5,5]
     movedir = [0,0]
+    velBallDefault = 10
     velMax = velBallDefault
     def __init__(self, renderer):
         self.renderer = renderer
