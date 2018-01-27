@@ -43,6 +43,9 @@ rightUp = K_k
 rightDown = K_j
 
 
+def random():
+    return 2*(np.random.random()-0.5)
+
 class PLAYER:
     pos = []
     movedir = 0
@@ -77,7 +80,7 @@ class BALL():
     velMax = velBallDefault
     def __init__(self):
         self.pos = np.array([WINDOWWIDTH/2,WINDOWHEIGHT/2])
-        self.movedir = np.array([4,3])
+        self.movedir = np.array([random(),random()])
     def move(self):
         self.pos += self.movedir/np.linalg.norm(self.movedir)*self.velMax
         if self.pos[1] < 0:
@@ -91,7 +94,7 @@ class BALL():
     def draw(self):
         rectangle(self.pos,np.array(self.pos) + np.array(self.size))
     def reset(self,dir):
-        self.pos = [WINDOWWIDTH//2,WINDOWHEIGHT//2]
+        self.pos = [WINDOWWIDTH/2,WINDOWHEIGHT/2]
         self.movedir = dir
         self.velMax = velBallDefault
 
@@ -129,6 +132,7 @@ def terminate():
     pygame.quit()
     sys.exit()
 
+
 def drawGame():
     clearscreen()
     for player in playerList:
@@ -148,7 +152,7 @@ def doGameStep():
             ball.velMax *= 1.1
         else:
             score[0] += 1
-            ball.reset([-1,2*(np.random.random()-0.5)])
+            ball.reset([-1,random()])
     if ball.pos[0] > WINDOWWIDTH:
         if ball.pos[1] in range(playerList[1].pos[1],playerList[1].pos[1]+BARSIZE):
             ball.pos[0] = 2*WINDOWWIDTH-ball.pos[0]
@@ -156,7 +160,7 @@ def doGameStep():
             ball.velMax *= 1.1
         else:
             score[1] += 1
-            ball.reset([1,int(np.random.random()-0.5)])
+            ball.reset([1,random()])
 
 
 
