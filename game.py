@@ -73,12 +73,6 @@ class Pong(Game):
         self.objects.append(self.ball)
         self.obstacleList = []
 
-<<<<<<< HEAD
-        #self.afterScore(0)
-        #self.afterScore(1)
-
-=======
->>>>>>> aa125b8c5319c4d94bf0418288be3f108ac9030e
     def terminate(self):
         pygame.quit()
         sys.exit()
@@ -102,13 +96,9 @@ class Pong(Game):
                 y0 = self.ball.pos[1]-(self.ball.pos[0]-player*self.renderer.windowwidth)*self.ball.movedir[1]/self.ball.movedir[0]
                 ypl = self.players[player].pos[1]
                 if  ypl < y0 < ypl+self.renderer.barsize:
-<<<<<<< HEAD
                     soundcoll = pygame.mixer.Sound("collision.wav")
                     soundcoll.play()
-                    self.ball.movedir = self.velAfterCollisionPlayer(player,y0)
-=======
                     self.ball.movedir = self.dirAfterCollisionPlayer(player,y0)
->>>>>>> aa125b8c5319c4d94bf0418288be3f108ac9030e
                     self.ball.pos = np.array([player*self.renderer.windowwidth,y0])
                     self.ball.vel = min(self.ball.vel * self.ball.speedup, self.ball.velMax)
                 else:
