@@ -15,6 +15,7 @@ WINDOWWIDTH = 400
 BARSIZE = WINDOWHEIGHT//5
 pos = [WINDOWWIDTH//2,WINDOWHEIGHT//2]
 length = 100
+velBallDefault = 1
 
 playerList = []
 playerLeftPos = [0,(WINDOWHEIGHT-BARSIZE)//2]
@@ -61,7 +62,7 @@ class BALL():
     pos = []
     size = [5,5]
     movedir = [0,0]
-    velMax = 1
+    velMax = velBallDefault
     def __init__(self):
         self.pos = [WINDOWWIDTH//2,WINDOWHEIGHT//2]
         self.movedir = [4,3]
@@ -76,7 +77,12 @@ class BALL():
         for i in range(2):
             self.pos[i] = int(self.pos[i]+0.5)
     def draw(self):
-        rectangle(self.pos,self.pos+self.size)
+        rectangle(self.pos,np.array(self.pos) + np.array(self.size))
+    def reset(self,dir):
+        self.pos = [WINDOWWIDTH//2,WINDOWHEIGHT//2]
+        self.movedir = dir
+        self.velMax = velBallDefault
+
 
 
 # init Game
@@ -130,6 +136,7 @@ def doGameStep():
             ball.velMax += 1
         else:
             score[0] += 1
+            ball.reset([-1,int(np.random.random()-0.5)])
     if ball.pos[0] > WINDOWWIDTH:
         if ball.pos[1] in range(playerList[1].pos[1],playerList[1].pos[1]+BARSIZE):
             ball.pos[0] = 2*WINDOWWIDTH-ball.pos[0]
@@ -137,6 +144,7 @@ def doGameStep():
             ball.velMax += 1
         else:
             score[1] += 1
+            ball.reset([1,int(np.random.random()-0.5)])
 
 
 
