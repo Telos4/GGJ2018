@@ -5,8 +5,6 @@ import numpy as np
 
 import renderer
 
-
-
 playerList = []
 
 leftUp = K_d
@@ -78,12 +76,6 @@ class BALL():
 
 
 
-# init Game
-playerList.append(PLAYER(True, renderer))
-playerList.append(PLAYER(False, renderer))
-ball = BALL(renderer)
-score = [0,0]
-
 def terminate():
     pygame.quit()
     sys.exit()
@@ -142,6 +134,12 @@ if __name__ == "__main__":
         print("Oscilloscope not connected!")
 
     renderer = renderer.Renderer(serial=ser, oszi=oszi)
+
+    # init Game
+    playerList.append(PLAYER(True, renderer))
+    playerList.append(PLAYER(False, renderer))
+    ball = BALL(renderer)
+    score = [0, 0]
 
     while True:
         for event in pygame.event.get():
