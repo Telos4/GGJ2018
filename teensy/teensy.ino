@@ -1,16 +1,20 @@
+/*
+ser = serial.Serial("/dev/cu.usbmodem3297371", 115200, timeout=10)
+ser.write(((0<<31)+(0<<30)+(3000<<16)+4000).to_bytes(4,'big'))
+ser.close()
+*/
+
 #include <SPI.h>
 
 const short daccspin = 10;
 const short dacldacpin = 2;
 
-typedef struct {short c:1; short b:1; short pad:2; short x:12;
-  short pad2:4; short y:12;} linedata_t;
-typedef union {linedata_t linedata; unsigned int serial;} lineunion_t;
-struct {unsigned short x,y;} currentpos;
+struct {unsigned short x=0,y=0;} currentpos;
 
-linedata_t lines[1000];
+unsigned int lines[1000];
 unsigned int linecount = 0;
 
+unsigned int lastframe=0;
 
 
 void setup() {
@@ -21,20 +25,20 @@ void setup() {
   SPI.begin();
   // Serial.begin(9600);
   Serial.begin(115200);
-  while (!Serial) {}
+  // while (!Serial) {}
 }
 
 void loop() {
-  int t=micros();
-  // Serial.print('A');
-  // Serial.println(sizeof(short));
-  // serialline();
-  // delay(10);
+  // int t=micros();
+  // for (int i=0; i<10; i++)
+  // smallsquare();
+  serialline();
   // bigsquare();
-  square(50,50,2000,3000);
-  smallsquare();
+  // square(50,50,2000,3000);
+  // smallsquare();
+  // Serial.println(micros()-t);
   // delay(10);
-  Serial.println(micros()-t);
+  
 }
 
 void square(int x1, int y1, int x2, int y2){
@@ -44,20 +48,15 @@ mylineto(0,x2,y2);
 mylineto(0,x1,y2);
 mylineto(0,x1,y1);
 }
-
 void bigsquare(){
   square(0,0,4095,4095);
 }
-
 void smallsquare(){
   square(500,500,1000,1000);
 }
-//#define NUM 5000
-//unsigned short lines_x1[NUM], lines_x2[NUM], lines_y1[NUM], lines_y2[NUM]; // short = 2 Byte
-//unsigned int linecount = 0;
 
 
-/*
+
 short line2x(const unsigned int line){
 return (line >> 16) & 0xFFF;
 }
@@ -67,37 +66,42 @@ return line & 0xFFF; // just to be sure
 bool line2b(const unsigned int line){
 return (line >> 30) & 0x1;
 }
-*/
+
 
 void serialline() {
+  unsigned int thisframe=millis();
+  if(thisframe-lastframe >= 20){
+    lastframe=thisframe;
+    mylineto(1,0,0);
+    for (unsigned int i = 0; i < linecount; i++) {
+      lineto(lines[i]);
+    }
+  }
+  
   if (Serial.available() >= 4) {
     unsigned int t = Serial.read() << 24;
     t |= Serial.read() << 16;
     t |= Serial.read() << 8;
     t |= Serial.read();
-    lineunion_t line;
-    line.serial = t;
-    if (line.linedata.c) {
+    if (t&(1<<31)) {
       linecount = 0;
       dac2(0, 0); // Zeiger auf Oszi nach unten links bewegen
       return;
     }
     if (linecount < 1000-1) {
-      lines[linecount++] = line.linedata;
+      lines[linecount++] = t;
     }
-  }
-  for (unsigned int i = 0; i < linecount; i++) {
-    lineto(lines[i]);
   }
 }
 
-void lineto(const linedata_t line) {
+void lineto(const unsigned int line) {
 
-const short x2 = line.x & 0xFFF;
-const short y2 = line.y & 0xFFF;
-const bool b = line.b;
 
-if (b){ // 1 = moveto
+const short x2 = line2x(line);
+const short y2 = line2y(line);
+const bool b = line2b(line);
+
+if(b){ // 1 = moveto
 currentpos.x=x2;
 currentpos.y=y2;
 dac2(x2,y2);
@@ -125,27 +129,10 @@ const int stepy = ((((int)(y2-y1))*steplen)<<shift)/len;
 
 while(true){
 
-if(stepx >= 0){
-  if(x1>x2){
-    break;
-  }
-}
-if(stepx < 0){
-  if(x1<x2){
-    break;
-  }
-}
-if(stepy >= 0){
-  if(y1>y2){
-    break;
-  }
-}
-if(stepy < 0){
-  if(y1<y2){
-    break;
-  }
-}
-
+if(stepx >= 0 && x1>x2) break;
+if(stepx <  0 && x1<x2) break;
+if(stepy >= 0 && y1>y2) break;
+if(stepy <  0 && y1<y2) break;
 
 dac2(x1,y1);
 x1=((x1<<shift)+stepx)>>shift;
@@ -161,10 +148,9 @@ currentpos.y=y2;
 }
 
 void mylineto(int b, int x, int y) {
-linedata_t line;
-line.x=x;
-line.y=y;
-line.b=b;
+unsigned int line = y;
+line |= x<<16;
+line |= b<<30;
 lineto(line);
 }
 
