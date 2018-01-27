@@ -31,7 +31,7 @@ SCALING_FACTOR = 10 # how much larger is the osci-display compared to the pygame
 BARSIZE = WINDOWHEIGHT//5
 pos = [WINDOWWIDTH//2,WINDOWHEIGHT//2]
 length = 100
-velBallDefault = 1
+velBallDefault = 10
 
 playerList = []
 playerLeftPos = [0,(WINDOWHEIGHT-BARSIZE)//2]
@@ -47,7 +47,7 @@ class PLAYER:
     pos = []
     movedir = 0
     controls = []
-    vel = 2
+    vel = 20
     def __init__(self,left):
         movedir = 0
         if left:
@@ -76,8 +76,8 @@ class BALL():
     movedir = [0,0]
     velMax = velBallDefault
     def __init__(self):
-        self.pos = [WINDOWWIDTH//2,WINDOWHEIGHT//2]
-        self.movedir = [4,3]
+        self.pos = np.array([WINDOWWIDTH/2,WINDOWHEIGHT/2])
+        self.movedir = np.array([4,3])
     def move(self):
         self.pos += self.movedir/np.linalg.norm(self.movedir)*self.velMax
         if self.pos[1] < 0:
@@ -145,15 +145,15 @@ def doGameStep():
         if ball.pos[1] in range(playerList[0].pos[1],playerList[0].pos[1]+BARSIZE):
             ball.pos[0] = -ball.pos[0]
             ball.movedir[0] = -ball.movedir[0]
-            ball.velMax += 1
+            ball.velMax *= 1.1
         else:
             score[0] += 1
-            ball.reset([-1,int(np.random.random()-0.5)])
+            ball.reset([-1,2*(np.random.random()-0.5)])
     if ball.pos[0] > WINDOWWIDTH:
         if ball.pos[1] in range(playerList[1].pos[1],playerList[1].pos[1]+BARSIZE):
             ball.pos[0] = 2*WINDOWWIDTH-ball.pos[0]
             ball.movedir[0] = -ball.movedir[0]
-            ball.velMax += 1
+            ball.velMax *= 1.1
         else:
             score[1] += 1
             ball.reset([1,int(np.random.random()-0.5)])
