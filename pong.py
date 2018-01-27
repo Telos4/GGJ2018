@@ -92,4 +92,3 @@ if __name__ == "__main__":
         gamerunning = ponggame.update()
 
         time.sleep(1/60)
-
