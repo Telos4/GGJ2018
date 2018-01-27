@@ -1,15 +1,9 @@
-import pygame, sys
-from pygame.locals import *
-import time
-import numpy as np
 from game import Pong
 
 import renderer
-import letters
-import pygame, sys
+import pygame
 from pygame.locals import *
 import time
-import numpy as np
 playerList = []
 
 leftUp = K_d
@@ -84,9 +78,11 @@ while gamerunning:
             ponggame.ball.velMax = 0
             pygame.display.update()
             #gamerunning = False
-            time.sleep(10)  
+            time.sleep(5)  
     ponggame.update() 
       
     #text_renderer.WORD("GLOBALGAMEJAM",3)
     #pygame.display.update()
+
     time.sleep(1/60)
+

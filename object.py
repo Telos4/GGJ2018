@@ -13,6 +13,17 @@ class Object():
 def random():
     return 2*(np.random.random()-0.5)
 
+class OBSTACLE(Object):
+    start = []
+    end = []
+    def __init__(self,renderer,start,end):
+        Object.__init__(self,None,renderer)
+        self.start = start
+        self.end = end
+    def draw(self):
+        self.renderer.line(self.start,self.end)
+
+
 
 class BALL(Object):
     movedir = [0,0]
@@ -22,11 +33,40 @@ class BALL(Object):
         self.pos = np.array([self.renderer.windowwidth/2,self.renderer.windowheight/2])
         self.size = size
         self.movedir = np.array([random(),random()])
-        self.velBallDefault = 50
+        self.velBallDefault = 20
         self.velMax = self.velBallDefault
+    def move(self,obstacleList):
+        posOld = self.pos
+        posNew = posOld + self.movedir/np.linalg.norm(self.movedir)*self.velMax
+        # collision with obstacles:
+        u0 = posOld[0]
+        v0 = posOld[1]
+        u1 = posNew[0]
+        v1 = posNew[1]
+        mb = (v1-v0)/(u1-u0)
+        for obst in obstacleList:
+            x0 = obst.start[0]
+            y0 = obst.start[1]
+            x1 = obst.end[0]
+            y1 = obst.end[1]
+            mo = (y1-y0)/(x1-x0)
+            x = (y0-v0+mb*u0-mo*x0)/(mb-mo)
+            y = y0 + mo*(x-x0)
+            cross = np.array([x,y])
+            if min(u0,u1) < x < max(u0,u1):
+                if min(y0,y1) < y < max(y0,y1):
+                    a = posNew-cross
+                    b = np.array([x1-x0,y1-y0])
+                    b = b/np.linalg.norm(b)
+                    X = np.dot(a,b)*b
+                    posMirror = 2*cross+2*X-posNew
+                    posNew = posMirror
+                    self.movedir = posMirror-cross
+                    self.velMax *= 1.1
 
-    def move(self):
-        self.pos += self.movedir/np.linalg.norm(self.movedir)*self.velMax
+        self.pos = posNew
+
+
         if self.pos[1] < 0:
             self.pos[1] = -self.pos[1]
             self.movedir[1] = -self.movedir[1]
