@@ -1,15 +1,9 @@
-import pygame, sys
-from pygame.locals import *
-import time
-import numpy as np
 from game import Pong
 
 import renderer
-import letters
-import pygame, sys
+import pygame
 from pygame.locals import *
 import time
-import numpy as np
 playerList = []
 
 leftUp = K_d
