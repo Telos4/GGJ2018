@@ -3,39 +3,9 @@ from pygame.locals import *
 import time
 import numpy as np
 
-OSZI = False
-try:
-    oszi_params = open('oszi_params.txt', 'r')
-    print(oszi_params)
-
-    import serial
-    for line in oszi_params:
-        if line[0] != "#":
-            try:
-                serial_port = line.rstrip()
-                ser = serial.Serial(serial_port, 115200, timeout=10)
-                OSZI = True
-                break
-            except:
-                print("trying next configuration")
-except:
-    print("Oscilloscope not connected!")
-
-
-
-BGCOLOR = (0,0,0)
-LINECOLOR = (000,255,000)
-WINDOWHEIGHT = 4000
-WINDOWWIDTH = 4000
-SCALING_FACTOR = 10 # how much larger is the osci-display compared to the pygame surface
-BARSIZE = WINDOWHEIGHT//5
-pos = [WINDOWWIDTH//2,WINDOWHEIGHT//2]
-length = 100
-velBallDefault = 10
+import renderer
 
 playerList = []
-playerLeftPos = [0,(WINDOWHEIGHT-BARSIZE)//2]
-playerRightPos = [WINDOWWIDTH-1,(WINDOWHEIGHT-BARSIZE)//2]
 
 leftUp = K_d
 leftDown = K_f
@@ -51,7 +21,10 @@ class PLAYER:
     movedir = 0
     controls = []
     vel = 20
-    def __init__(self,left):
+    def __init__(self,left, renderer):
+        self.renderer = renderer
+        playerLeftPos = [0,(self.renderer.windowheight-self.renderer.barsize)//2]
+        playerRightPos = [self.renderer.windowwidth-1,(self.renderer.windowheight-self.renderer.barsize)//2]
         movedir = 0
         if left:
             self.pos = playerLeftPos
@@ -68,94 +41,68 @@ class PLAYER:
         self.pos[1] += self.movedir*self.vel
         if self.pos[1] < 0:
             self.pos[1] = 0
-        if self.pos[1] >= WINDOWHEIGHT-BARSIZE:
-            self.pos[1] = WINDOWHEIGHT-BARSIZE-1
+        if self.pos[1] >= self.renderer.windowheight-self.renderer.barsize:
+            self.pos[1] = self.renderer.windowheight-self.renderer.barsize-1
     def draw(self):
-        line(self.pos,[self.pos[0],self.pos[1]+BARSIZE])
+        self.renderer.line(self.pos,[self.pos[0],self.pos[1]+self.renderer.barsize])
 
 class BALL():
     pos = []
     size = [5,5]
     movedir = [0,0]
+    velBallDefault = 10
     velMax = velBallDefault
-    def __init__(self):
-        self.pos = np.array([WINDOWWIDTH/2,WINDOWHEIGHT/2])
+    def __init__(self, renderer):
+        self.renderer = renderer
+        self.pos = np.array([self.renderer.windowwidth/2,self.renderer.windowheight/2])
         self.movedir = np.array([random(),random()])
     def move(self):
         self.pos += self.movedir/np.linalg.norm(self.movedir)*self.velMax
         if self.pos[1] < 0:
             self.pos[1] = -self.pos[1]
             self.movedir[1] = -self.movedir[1]
-        if self.pos[1] > WINDOWHEIGHT:
-            self.pos[1] = 2 * WINDOWHEIGHT - self.pos[1]
+        if self.pos[1] > self.renderer.windowheight:
+            self.pos[1] = 2 * self.renderer.windowheight - self.pos[1]
             self.movedir[1] = -self.movedir[1]
         for i in range(2):
             self.pos[i] = int(self.pos[i]+0.5)
     def draw(self):
-        rectangle(self.pos,np.array(self.pos) + np.array(self.size))
+        self.renderer.rectangle(self.pos,np.array(self.pos) + np.array(self.size))
     def reset(self,dir):
-        self.pos = [WINDOWWIDTH/2,WINDOWHEIGHT/2]
+        self.pos = [self.renderer.windowheight/2,self.renderer.windowheight/2]
         self.movedir = dir
-        self.velMax = velBallDefault
+        self.velMax = self.velBallDefault
 
 
 
-# init Game
-pygame.init()
-DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH//SCALING_FACTOR , WINDOWHEIGHT//SCALING_FACTOR))
-playerList.append(PLAYER(True))
-playerList.append(PLAYER(False))
-ball = BALL()
-score = [0,0]
-
-def line(start_pos,end_pos):
-    sx = int(start_pos[0])
-    sy = int(start_pos[1])
-    ex = int(end_pos[0])
-    ey = int(end_pos[1])
-    if OSZI:
-        ser.write(((sx<<48)+(sy<<32)+(ex<<16)+(ey)).to_bytes(8,'big'))
-    pygame.draw.line(DISPLAYSURF,LINECOLOR,np.array(start_pos)/SCALING_FACTOR,np.array(end_pos)/SCALING_FACTOR)
-
-def rectangle(upLeft,downRight):
-    line(upLeft,[upLeft[0],downRight[1]])
-    line([upLeft[0],downRight[1]],downRight)
-    line(downRight,[downRight[0],upLeft[1]])
-    line([downRight[0],upLeft[1]],upLeft)
-
-def clearscreen():
-    if OSZI:
-        line([65535,0],[0,0])
-    DISPLAYSURF.fill(BGCOLOR)
 
 def terminate():
     pygame.quit()
     sys.exit()
 
-
-def drawGame():
-    clearscreen()
+def drawGame(renderer):
+    renderer.clearscreen()
     for player in playerList:
         player.draw()
     ball.draw()
 
-def doGameStep():
+def doGameStep(renderer):
     global ball
     global score
     for p in playerList:
         p.move()
     ball.move()
     if ball.pos[0] < 0:
-        if ball.pos[1] in range(playerList[0].pos[1],playerList[0].pos[1]+BARSIZE):
+        if ball.pos[1] in range(playerList[0].pos[1],playerList[0].pos[1]+renderer.barsize):
             ball.pos[0] = -ball.pos[0]
             ball.movedir[0] = -ball.movedir[0]
             ball.velMax *= 1.1
         else:
             score[0] += 1
             ball.reset([-1,random()])
-    if ball.pos[0] > WINDOWWIDTH:
-        if ball.pos[1] in range(playerList[1].pos[1],playerList[1].pos[1]+BARSIZE):
-            ball.pos[0] = 2*WINDOWWIDTH-ball.pos[0]
+    if ball.pos[0] > renderer.windowwidth:
+        if ball.pos[1] in range(playerList[1].pos[1],playerList[1].pos[1]+renderer.barsize):
+            ball.pos[0] = 2*renderer.windowwidth-ball.pos[0]
             ball.movedir[0] = -ball.movedir[0]
             ball.velMax *= 1.1
         else:
@@ -164,25 +111,50 @@ def doGameStep():
 
 
 
+if __name__ == "__main__":
 
-while True:
-    for event in pygame.event.get():
-        if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
-            terminate()
-        if event.type == KEYDOWN:
-            for p in playerList:
-                if event.key in p.controls:
-                    p.changeVel(1, event.key)
-        if event.type == KEYUP:
-            for p in playerList:
-                if event.key in p.controls:
-                    p.changeVel(-1, event.key)
+    oszi = False
+    ser = None
+    try:
+        oszi_params = open('oszi_params.txt', 'r')
+        print(oszi_params)
 
-    doGameStep()
-    drawGame()
-    pygame.display.update()
-    time.sleep(1/60)
+        import serial
 
+        for line in oszi_params:
+            if line[0] != "#":
+                try:
+                    serial_port = line.rstrip()
+                    ser = serial.Serial(serial_port, 115200, timeout=10)
+                    oszi = True
+                    break
+                except:
+                    print("trying next configuration")
+    except:
+        print("Oscilloscope not connected!")
 
-if OSZI:
-    ser.close()
+    renderer = renderer.Renderer(serial=ser, oszi=oszi)
+
+    # init Game
+    playerList.append(PLAYER(True, renderer))
+    playerList.append(PLAYER(False, renderer))
+    ball = BALL(renderer)
+    score = [0, 0]
+
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
+                terminate()
+            if event.type == KEYDOWN:
+                for p in playerList:
+                    if event.key in p.controls:
+                        p.changeVel(1, event.key)
+            if event.type == KEYUP:
+                for p in playerList:
+                    if event.key in p.controls:
+                        p.changeVel(-1, event.key)
+
+        doGameStep(renderer)
+        drawGame(renderer)
+        pygame.display.update()
+        time.sleep(1/60)
