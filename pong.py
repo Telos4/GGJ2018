@@ -4,6 +4,8 @@ import renderer
 import pygame
 from pygame.locals import *
 import time
+import math
+
 playerList = []
 
 leftUp = K_d
@@ -37,18 +39,30 @@ if __name__ == "__main__":
     ponggame = Pong(renderer)
     pass
 
-    splashscreen = True
+    splashscreen = False
     gamerunning = True
     while gamerunning:
-
+        t_end = time.time() + 5
         if splashscreen == True:
             renderer.clearscreen()
             sound = pygame.mixer.Sound("GGJ18.wav")
             sound.play()
-            ponggame.text_renderer.WORD("GLOBALGAMEJAM",2)
-            ponggame.text_renderer.WORD("2018",3)
-            pygame.display.update()
-            time.sleep(0.15)
+            while time.time()<t_end:
+                value = []
+                for t in range(0,500):
+                    renderer.clearscreen()
+                    ponggame.text_renderer.WORD("GLOBALGAMEJAM",2)
+                    ponggame.text_renderer.WORD("2018",3)
+                    for n in range(0,40):
+                        value.append([n*100,int(math.sin(n*0.5+0.01*t)*500)+3000])
+                    for n in range(0,39):
+                        renderer.line(value[n],value[n+1])
+                    value = []
+                    pygame.display.update()
+               
+            #time.sleep(5)
+
+
             renderer.clearscreen()
             ponggame.text_renderer.WORD("3",3)
             pygame.display.update()
@@ -78,4 +92,3 @@ if __name__ == "__main__":
         gamerunning = ponggame.update()
 
         time.sleep(1/60)
-
