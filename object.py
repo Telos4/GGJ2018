@@ -34,10 +34,10 @@ class BALL(Object):
         self.size = size
         self.movedir = np.array([random(),random()])
         self.velBallDefault = 20
-        self.velMax = self.velBallDefault
+        self.vel = self.velBallDefault
     def move(self,obstacleList):
         posOld = self.pos
-        posNew = posOld + self.movedir/np.linalg.norm(self.movedir)*self.velMax
+        posNew = posOld + self.movedir/np.linalg.norm(self.movedir)*self.vel
         # collision with obstacles:
         u0 = posOld[0]
         v0 = posOld[1]
@@ -62,7 +62,7 @@ class BALL(Object):
                     posMirror = 2*cross+2*X-posNew
                     posNew = posMirror
                     self.movedir = posMirror-cross
-                    self.velMax *= 1.1
+                    self.vel *= 1.5
 
         self.pos = posNew
 
@@ -79,12 +79,13 @@ class BALL(Object):
 
 
     def draw(self):
+        self.renderer.line(self.pos, np.array(self.pos) - self.vel * np.array(self.movedir))
         self.renderer.rectangle(self.pos,np.array(self.pos) + np.array(self.size))
 
     def reset(self,dir):
         self.pos = [self.renderer.windowheight/2,self.renderer.windowheight/2]
         self.movedir = dir
-        self.velMax = self.velBallDefault
+        self.vel = self.velBallDefault
 
 class LineObject(Object):
     def __init__(self, pos, renderer):

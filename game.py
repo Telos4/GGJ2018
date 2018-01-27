@@ -85,7 +85,7 @@ class Pong(Game):
             if self.ball.pos[1] in range(self.players[0].pos[1], self.players[0].pos[1] + self.renderer.barsize):
                 self.ball.pos[0] = -self.ball.pos[0]
                 self.ball.movedir[0] = -self.ball.movedir[0]
-                self.ball.velMax *= 1.1
+                self.ball.vel *= 1.5
             else:
                 self.score[0] += 1
                 self.ball.reset([-1, random()])
@@ -96,7 +96,7 @@ class Pong(Game):
             if self.ball.pos[1] in range(self.players[1].pos[1], self.players[1].pos[1] + self.renderer.barsize):
                 self.ball.pos[0] = 2 * self.renderer.windowwidth - self.ball.pos[0]
                 self.ball.movedir[0] = -self.ball.movedir[0]
-                self.ball.velMax *= 1.1
+                self.ball.vel *= 1.5
             else:
                 self.score[1] += 1
                 self.ball.reset([1, random()])
@@ -107,14 +107,15 @@ class Pong(Game):
     def update(self):
         self.doGameStep()
         self.render()
-        #self.drawscore()
 
         for i in self.score:
-            if i == 8:
+            if i == 5:
                 self.text_renderer.WORD("GAMEOVER", 3)
-                self.ball.velMax = 0
+                self.ball.vel = 0
+                return False
 
         pygame.display.update()
+        return True
 
     def drawscore(self):
         strscore = str(self.score[1])+":"+str(self.score[0])

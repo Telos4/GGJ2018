@@ -52,6 +52,6 @@ while gamerunning:
                 if event.key in p.controls:
                     p.changeVel(-1, event.key)
 
-    ponggame.update()
+    gamerunning = ponggame.update()
     time.sleep(1/60)
 
