@@ -3,7 +3,7 @@ ser = serial.Serial("/dev/cu.usbmodem3297371", 115200, timeout=10)
 ser.write(((0<<31)+(0<<30)+(3000<<16)+4000).to_bytes(4,'big'))
 ser.close()
 */
-
+#include <stdint.h>
 #include <SPI.h>
 
 const short daccspin = 10;
@@ -33,6 +33,7 @@ void loop() {
   // for (int i=0; i<10; i++)
   // smallsquare();
   serialline();
+  // faecher();
   // bigsquare();
   // square(50,50,2000,3000);
   // smallsquare();
@@ -40,6 +41,14 @@ void loop() {
   // delay(10);
   
 }
+
+void faecher(){
+  for(int i = 0; i< 4095; i+=2){
+    mylineto(1, 4094/2, 4094/2);
+    mylineto(0, 3500, i);
+  }
+}
+
 
 void square(int x1, int y1, int x2, int y2){
 mylineto(1,x1,y1);
@@ -56,26 +65,29 @@ void smallsquare(){
 }
 
 
-
-short line2x(const unsigned int line){
-return (line >> 16) & 0xFFF;
-}
-short line2y(const unsigned int line){
-return line & 0xFFF; // just to be sure
-}
-bool line2b(const unsigned int line){
-return (line >> 30) & 0x1;
-}
+#define LINE_TO_X(line)  (((line) >> 16) & 0xFFF)
+//short line2x(const unsigned int line){
+//return (line >> 16) & 0xFFF;
+//}
+#define LINE_TO_Y(line)  ((line) & 0xFFF)
+//short line2y(const unsigned int line){
+//return line & 0xFFF; // just to be sure
+//}
+#define LINE_TO_B(line)  (((line) >> 30) & 0x1)
+//bool line2b(const unsigned int line){
+//return (line >> 30) & 0x1;
+//}
 
 
 void serialline() {
   unsigned int thisframe=millis();
   if(thisframe-lastframe >= 20){
     lastframe=thisframe;
-    mylineto(1,0,0);
+    // mylineto(1,0,0); // tragendes Poster
     for (unsigned int i = 0; i < linecount; i++) {
       lineto(lines[i]);
     }
+    mylineto(1,0,0);
   }
   
   if (Serial.available() >= 4) {
@@ -94,12 +106,11 @@ void serialline() {
   }
 }
 
-void lineto(const unsigned int line) {
+void lineto(const uint32_t line) {
 
-
-const short x2 = line2x(line);
-const short y2 = line2y(line);
-const bool b = line2b(line);
+const short x2 = LINE_TO_X(line);
+const short y2 = LINE_TO_Y(line);
+const bool b = LINE_TO_B(line);
 
 if(b){ // 1 = moveto
 currentpos.x=x2;
@@ -111,6 +122,62 @@ return;
 short x1 = currentpos.x;
 short y1 = currentpos.y;
 
+/*
+const int steplen = 10;
+
+if(x1==x2){ // vertikale
+  if(y1<y2){
+    do{ dac2(x1,y1);y1+=steplen;}while(y1<y2);
+  } else {
+    do{ dac2(x1,y1);y1-=steplen;}while(y1>y2);
+  }
+}
+else if(y1==y2){ // horizontal
+  if(x1<x2){
+    do{ dac2(x1,y1);x1+=steplen;}while(x1<x2);
+  } else {
+    do{ dac2(x1,y1);x1-=steplen;}while(x1>x2);
+  }
+}
+
+else {
+    const bool right = x1<x2;
+    int dx =  abs(x2-x1), sx = x1<x2 ? steplen : -steplen;
+    int dy = -abs(y2-y1), sy = y1<y2 ? steplen : -steplen;
+    int err = dx+dy, e2; // error value e_xy
+    int sdy = dy*steplen, sdx = dx*steplen;
+        
+    while(1){
+      dac2(x1,y1);
+      if( (right && x1>x2) || (!right && x1<x2)) break;
+      e2 = 2*err;
+      if (e2 > sdy) { err += sdy; x1 += sx; } // e_xy+e_x > 0
+      if (e2 < sdx) { err += sdx; y1 += sy; } // e_xy+e_y < 0
+    }
+}
+
+dac2(x2,y2);
+
+*/
+
+#if 0
+  int dx =  abs(x2-x1), sx = x1<x2 ? steplen2 : -steplen2;
+  int dy = -abs(y2-y1), sy = y1<y2 ? steplen2 : -steplen2;
+  int err = dx+dy, e2; // error value e_xy
+
+  while(1){
+    dac2(x1,y1);
+    if (x1==x2 && y1==y2) break;
+    e2 = 2*err;
+    if (e2 > dy) { err += dy; x1 += sx; } // e_xy+e_x > 0
+    if (e2 < dx) { err += dx; y1 += sy; } // e_xy+e_y < 0
+  }
+#endif
+
+
+
+
+
 // Serial.println("cur  " + String(x1)+" "+String(y1));
 // Serial.println("y1   " + String(y1));
 // Serial.println("y2   " + String(y2));
@@ -118,7 +185,7 @@ short y1 = currentpos.y;
 const int len = abs(x2-x1)+abs(y2-y1);
 // const int len = sqrt(sq(x2-x1)+sq(y2-y1));
 // Serial.println(len);
-const int steplen = 30;
+const int steplen = 10;
 // Serial.print('_');
 const int shift=10;
 const int stepx = ((((int)(x2-x1))*steplen)<<shift)/len;
@@ -139,6 +206,16 @@ x1=((x1<<shift)+stepx)>>shift;
 y1=((y1<<shift)+stepy)>>shift;
 // Serial.println(String(x1)+" "+String(y1));
 }
+
+
+
+//do {
+//  dac2(x1,y1);
+//  x1=((x1<<shift)+stepx)>>shift;
+//  y1=((y1<<shift)+stepy)>>shift;
+//} while (x1 < x2);
+
+
 
 // dac2(x2,y2);
 

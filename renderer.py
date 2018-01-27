@@ -14,17 +14,38 @@ class Renderer():
         
         self.bgcolor = (0,0,0)
         self.linecolor = (0,255,0)
+
+        self.lastpos = (0,0)
         
         pygame.init()
         self.displaysurf = pygame.display.set_mode((self.windowwidth // self.scalingfactor, self.windowheight // self.scalingfactor))
 
-    def line(self, start_pos,end_pos):
-        sx = int(start_pos[0])
-        sy = int(start_pos[1])
+    def lineto(self, end_pos, draw=True):
         ex = int(end_pos[0])
         ey = int(end_pos[1])
+        if ex < 0 or ex >=2**12:
+            print("WW: ex is wrong in ", end_pos)
+            ex=0
+        if ey < 0 or ey >=2**12:
+            print("WW: ey is wrong in ", end_pos)
+            ey=0
         if self.oszi:
-            self.serial.write(((sx<<48)+(sy<<32)+(ex<<16)+(ey)).to_bytes(8,'big'))
+            t=(ex<<16)+ey
+            if not draw:
+                t+=1<<30
+            self.serial.write(t.to_bytes(4,'big'))
+
+    def line(self, start_pos,end_pos):
+        if self.lastpos[0] == start_pos[0] and self.lastpos[1] == start_pos[1]:
+            self.lineto(end_pos)
+            self.lastpos=end_pos
+        elif self.lastpos[0] == end_pos[0] and self.lastpos[1] == end_pos[1]:
+            self.lineto(start_pos)
+            self.lastpos=start_pos
+        else:
+            self.lineto(start_pos,False)
+            self.lineto(end_pos)
+            self.lastpos=end_pos
         pygame.draw.line(self.displaysurf,self.linecolor,np.array(start_pos)/self.scalingfactor,np.array(end_pos)/self.scalingfactor)
 
     def rectangle(self, upLeft,downRight):
@@ -34,6 +55,22 @@ class Renderer():
         self.line([downRight[0],upLeft[1]],upLeft)
 
     def clearscreen(self):
+        self.lastpos=(0,0)
         if self.oszi:
-            self.line([65535,0],[0,0])
+            self.serial.write((1<<31).to_bytes(4,'big'))
         self.displaysurf.fill(self.bgcolor)
+
+
+if __name__ == "__main__":
+    import serial
+    ser = serial.Serial('/dev/cu.usbmodem3297371', 115200, timeout=10)
+    renderer = Renderer(serial=ser, oszi=True)
+    renderer.clearscreen()
+
+    ##renderer.line((0,0),(4095,4095))
+
+
+    for i in range(0,4095,100):
+        renderer.line((4094/2,4094/2),(3500,i))
+
+
