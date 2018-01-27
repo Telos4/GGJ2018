@@ -1,15 +1,9 @@
-import pygame, sys
-from pygame.locals import *
-import time
-import numpy as np
 from game import Pong
 
 import renderer
-import letters
-import pygame, sys
+import pygame
 from pygame.locals import *
 import time
-import numpy as np
 playerList = []
 
 leftUp = K_d
@@ -57,13 +51,7 @@ while gamerunning:
             for p in ponggame.players:
                 if event.key in p.controls:
                     p.changeVel(-1, event.key)
-    for i in ponggame.score:
-        if i == 2:
-            ponggame.text_renderer.WORD("GAMEOVER",3)
-            ponggame.ball.velMax = 0
-            #gamerunning = False
-            #time.sleep(10)
+
     ponggame.update()
-    #text_renderer.WORD("GLOBALGAMEJAM",3)
-    #pygame.display.update()
-    time.sleep(1/160)
+    time.sleep(1/60)
+

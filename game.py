@@ -36,7 +36,7 @@ class PLAYER:
         playerRightPos = [self.renderer.windowwidth-1,(self.renderer.windowheight-self.renderer.barsize)//2]
         self.movedir = 0
         self.controls = []
-        self.vel = 20
+        self.vel = 100
         if left:
             self.pos = playerLeftPos
             self.controls = [leftUp,leftDown]
@@ -116,6 +116,12 @@ class Pong(Game):
         for obst in self.obstacleList:
             obst.draw()
         #self.drawscore()
+
+        for i in self.score:
+            if i == 8:
+                self.text_renderer.WORD("GAMEOVER", 3)
+                self.ball.velMax = 0
+
         pygame.display.update()
 
     def drawscore(self):
