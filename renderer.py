@@ -8,7 +8,7 @@ class Renderer():
         self.windowheight = windowheight
         self.scalingfactor = scalingfactor
         #self.barsize = windowheight//5
-        self.barsize = windowheight//2
+        self.barsize = int(windowheight)
         self.oszi = oszi
         self.serial = serial
         
