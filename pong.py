@@ -45,7 +45,7 @@ if __name__ == "__main__":
 
 
 gamerunning = True
-while gamerunning:    
+while gamerunning:
     for event in pygame.event.get():
         if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
             ponggame.terminate()
@@ -60,3 +60,4 @@ while gamerunning:
 
     ponggame.update()
     time.sleep(1/60)
+
