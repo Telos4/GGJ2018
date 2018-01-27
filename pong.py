@@ -141,25 +141,21 @@ def doGameStep(renderer):
 
 
 
+if __name__ == "__main__":
+    while True:
+        for event in pygame.event.get():
+            if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
+                terminate()
+            if event.type == KEYDOWN:
+                for p in playerList:
+                    if event.key in p.controls:
+                        p.changeVel(1, event.key)
+            if event.type == KEYUP:
+                for p in playerList:
+                    if event.key in p.controls:
+                        p.changeVel(-1, event.key)
 
-while True:
-    for event in pygame.event.get():
-        if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
-            terminate()
-        if event.type == KEYDOWN:
-            for p in playerList:
-                if event.key in p.controls:
-                    p.changeVel(1, event.key)
-        if event.type == KEYUP:
-            for p in playerList:
-                if event.key in p.controls:
-                    p.changeVel(-1, event.key)
-
-    doGameStep(renderer)
-    drawGame(renderer)
-    pygame.display.update()
-    time.sleep(1/60)
-
-
-if OSZI:
-    ser.close()
+        doGameStep(renderer)
+        drawGame(renderer)
+        pygame.display.update()
+        time.sleep(1/60)
