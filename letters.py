@@ -1,225 +1,240 @@
-LE = 20
-OI = 5
-OX = OI
-OY = OI
+import renderer
+
+class TEXT():
+    #LE = 20
+    #OI = 5
+    #OX = OI
+    #OY = OI
+    def __init__(self,renderer):
+        self.renderer = renderer
+        self.LE = 200
+        self.OI = 5
+        self.OX = self.OI
+        self.OY = self.OI
+
+    def A(self):
+        self.renderer.line([self.OX,self.OY],[self.OX,self.OY+2*self.LE])
+        self.renderer.line([self.OX,self.OY+self.LE],[self.OX+self.LE,self.OY+self.LE])
+        self.renderer.line([self.OX,self.OY],[self.OX+self.LE,self.OY])
+        self.renderer.line([self.OX+self.LE,self.OY],[self.OX+self.LE,self.OY+2*self.LE])
+
+    def B(self):
+        self.renderer.line([OX,OY],[OX,OY+2*LE])
+        self.renderer.line([OX,OY+LE],[OX+LE,OY+LE])
+        self.renderer.line([OX,OY],[OX+LE,OY])
+        self.renderer.line([OX+LE,OY],[OX+LE,OY+2*LE])
+        self.renderer.line([OX,OY+2*LE],[OX+LE,OY+2*LE])
+
+    def C(self):
+        self.renderer.line([OX,OY], [OX+LE,OY])
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+        self.renderer.line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+
+    def D(self):
+        self.renderer.line([OX,OY],[OX,OY+2*LE])
+        self.renderer.line([OX,OY],[OX+LE//2,OY])
+        self.renderer.line([OX+LE//2,OY],[OX+LE,OY+LE])
+        self.renderer.line([OX+LE,OY+LE],[OX+LE//2,OY+2*LE])
+        self.renderer.line([OX,OY+2*LE],[OX+LE//2,OY+2*LE])
+
+    def E(self):
+        self.renderer.line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+        self.renderer.line([OX,OY+LE], [OX+LE,OY+LE])
+        self.renderer.line([OX,OY], [OX+LE,OY])
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+
+    def F(self):
+        self.renderer.line([OX,OY+LE], [OX+LE,OY+LE])
+        self.renderer.line([OX,OY], [OX+LE,OY])
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+
+    def G(self):
+        self.renderer.line([OX,OY], [OX+LE,OY])
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+        self.renderer.line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+        self.renderer.line([OX+LE//2,OY+LE], [OX+LE,OY+LE])
+        self.renderer.line([OX+LE,OY+2*LE],[OX+LE, OY+LE])
+
+    def H(self):
+        self.renderer.line([OX,OY],[OX,OY+2*LE])
+        self.renderer.line([OX,OY+LE],[OX+LE,OY+LE])
+        self.renderer.line([OX+LE,OY],[OX+LE,OY+2*LE])
+
+    def I(self):
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+
+    def J(self):
+        self.renderer.line([OX+LE,OY], [OX+LE,OY+2*LE])
+        self.renderer.line([OX,OY], [OX+LE,OY])
+        self.renderer.line([OX+LE//2,OY+2*LE], [OX+LE,OY+2*LE])
+
+    def K(self):
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+        self.renderer.line([OX,OY+LE], [OX+LE,OY])
+        self.renderer.line([OX,OY+LE], [OX+LE,OY+2*LE])
+
+    def L(self):
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+        self.renderer.line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+
+    def M(self):
+        self.renderer.line([OX+LE,OY], [OX+LE,OY+2*LE])
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+        self.renderer.line([OX,OY], [OX+LE//2,OY+2*LE])
+        self.renderer.line([OX+LE//2,OY+2*LE], [OX+LE,OY])
+
+    def N(self):
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+        self.renderer.line([OX+LE,OY], [OX+LE,OY+2*LE])
+        self.renderer.line([OX,OY], [OX+LE,OY+2*LE])
+
+    def O(self):
+        self.renderer.line([OX,OY], [OX+LE,OY])
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+        self.renderer.line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+        self.renderer.line([OX+LE,OY], [OX+LE,OY+2*LE])
+
+    def P(self):
+        self.renderer.line([OX,OY],[OX+LE,OY])
+        self.renderer.line([OX,OY],[OX,OY+2*LE])
+        self.renderer.line([OX+LE,OY],[OX+LE,OY+LE])
+        self.renderer.line([OX,OY+LE],[OX+LE,OY+LE])
+
+    def Q(self):
+        self.renderer.line([OX,OY], [OX+LE,OY])
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+        self.renderer.line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+        self.renderer.line([OX+LE,OY], [OX+LE,OY+2*LE])
+        self.renderer.line([OX+3//4*LE, OY+3//4*LE], [OX+5//4*LE, OY+5//4*LE])
+
+    def R(self):
+        self.renderer.line([OX,OY], [OX+LE,OY])
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+        self.renderer.line([OX+LE//2,OY+LE], [OX+LE,OY+2*LE])
+        self.renderer.line([OX,OY+LE], [OX+LE,OY+LE])
+        self.renderer.line([OX+LE,OY], [OX+LE, OY+LE])
+
+    def S(self):
+        self.renderer.line([OX,OY],[OX+LE,OY])
+        self.renderer.line([OX,OY],[OX,OY+LE])
+        self.renderer.line([OX,OY+LE],[OX+LE,OY+LE])
+        self.renderer.line([OX+LE,OY+LE],[OX+LE,OY+2*LE])
+        self.renderer.line([OX,OY+2*LE],[OX+LE,OY+2*LE])
+
+    def T(self):
+        self.renderer.line([OX,OY],[OX+LE,OY])
+        self.renderer.line([OX+LE//2,OY],[OX+LE//2,OY+2*LE])
+
+    def U(self):
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+        self.renderer.line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+        self.renderer.line([OX+LE,OY+2*LE], [OX+LE,OY+2*LE])
+
+    def V(self):
+        self.renderer.line([OX,OY], [OX+LE//2, OY + 2*LE])
+        self.renderer.line([OX+LE//2,OY+2*LE], [OX+LE, OY])
+
+    def W(self):
+        self.renderer.line([OX+LE,OY], [OX+LE,OY+2*LE])
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+        self.renderer.line([OX,OY+2*LE], [OX+LE//2,OY])
+        self.renderer.line([OX+LE//2,OY], [OX+LE,OY+2*LE])
+
+    def X(self):
+        self.renderer.line([OX,OY], [OX+LE, OY+2*LE])
+        self.renderer.line([OX, OY+2*LE],[OX+LE,OY])
+
+    def Y(self):
+        self.renderer.line([OX,OY],[OX+LE//2, OY+LE])
+        self.renderer.line([OX+LE//2, OY+LE], [OX + LE, OY])
+        self.renderer.line([OX + LE//2, OY+ LE], [OX + LE//2, OY+ 2*LE])
+
+    def Z(self):
+        self.renderer.line([OX,OY],[OX+LE,OY])
+        self.renderer.line([OX, OY+2*LE],[OX+LE,OY+2*LE])
+        self.renderer.line([OX+LE,OY],[OX,OY+2*LE])
 
 
-def A():
-    line([OX,OY],[OX,OY+2*LE])
-    line([OX,OY+LE],[OX+LE,OY+LE])
-    line([OX,OY],[OX+LE,OY])
-    line([OX+LE,OY],[OX+LE,OY+2*LE])
+    def zero(self):
+        O()
 
-def B():
-    line([OX,OY],[OX,OY+2*LE])
-    line([OX,OY+LE],[OX+LE,OY+LE])
-    line([OX,OY],[OX+LE,OY])
-    line([OX+LE,OY],[OX+LE,OY+2*LE])
-    line([OX,OY+2*LE],[OX+LE,OY+2*LE])
+    def one(self):
+        self.renderer.line([OX+LE, OY], [OX+LE,OY+2*LE])
 
-def C():
-    line([OX,OY], [OX+LE,OY])
-    line([OX,OY], [OX,OY+2*LE])
-    line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+    def two(self):
+        self.renderer.line([OX,OY],[OX+LE,OY])
+        self.renderer.line([OX+LE,OY],[OX+LE,OY+LE])
+        self.renderer.line([OX,OY+LE],[OX+LE,OY+LE])
+        self.renderer.line([OX,OY+LE],[OX,OY+2*LE])
+        self.renderer.line([OX,OY+2*LE],[OX+LE,OY+2*LE])
 
-def D():
-    line([OX,OY],[OX,OY+2*LE])
-    line([OX,OY],[OX+LE//2,OY])
-    line([OX+LE//2,OY],[OX+LE,OY+LE])
-    line([OX+LE,OY+LE],[OX+LE//2,OY+2*LE])
-    line([OX,OY+2*LE],[OX+LE//2,OY+2*LE])
+    def three(self):
+        self.renderer.line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+        self.renderer.line([OX,OY+LE], [OX+LE,OY+LE])
+        self.renderer.line([OX,OY], [OX+LE,OY])
+        self.renderer.line([OX+LE,OY], [OX+LE,OY+2*LE])
 
-def E():
-    line([OX,OY+2*LE], [OX+LE,OY+2*LE])
-    line([OX,OY+LE], [OX+LE,OY+LE])
-    line([OX,OY], [OX+LE,OY])
-    line([OX,OY], [OX,OY+2*LE])
+    def four(self):
+        self.renderer.line([OX,OY],[OX,OY+LE])
+        self.renderer.line([OX,OY+LE],[OX+LE,OY+LE])
+        self.renderer.line([OX+LE,OY],[OX+LE,OY+2*LE])
 
-def F():
-    line([OX,OY+LE], [OX+LE,OY+LE])
-    line([OX,OY], [OX+LE,OY])
-    line([OX,OY], [OX,OY+2*LE])
+    def five(self):
+        S()
 
-def G():
-    line([OX,OY], [OX+LE,OY])
-    line([OX,OY], [OX,OY+2*LE])
-    line([OX,OY+2*LE], [OX+LE,OY+2*LE])
-    line([OX+LE//2,OY+LE], [OX+LE,OY+LE])
-    line([OX+LE,OY+2*LE],[OX+LE, OY+LE])
+    def six(self):
+        self.renderer.line([OX,OY], [OX+LE,OY])
+        self.renderer.line([OX,OY], [OX,OY+2*LE])
+        self.renderer.line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+        self.renderer.line([OX,OY+LE], [OX+LE,OY+LE])
+        self.renderer.line([OX+LE,OY+2*LE],[OX+LE, OY+LE])
 
-def H():
-    line([OX,OY],[OX,OY+2*LE])
-    line([OX,OY+LE],[OX+LE,OY+LE])
-    line([OX+LE,OY],[OX+LE,OY+2*LE])
+    def seven(self):
+        one()
+        self.renderer.line([OX,OY],[OX,OY+LE])
 
-def I():
-    line([OX,OY], [OX,OY+2*LE])
+    def eight(self):
+        zero()
+        self.renderer.line([OX,OY+LE],[OX+LE,OY+LE])
 
-def J():
-    line([OX+LE,OY], [OX+LE,OY+2*LE])
-    line([OX,OY], [OX+LE,OY])
-    line([OX+LE//2,OY+2*LE], [OX+LE,OY+2*LE])
+    def nine(self):
+        self.renderer.line([OX,OY], [OX+LE,OY])
+        self.renderer.line([OX,OY], [OX,OY+LE])
+        self.renderer.line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+        self.renderer.line([OX,OY+LE], [OX+LE,OY+LE])
+        self.renderer.line([OX+LE,OY+2*LE],[OX+LE, OY])
 
-def K():
-    line([OX,OY], [OX,OY+2*LE])
-    line([OX,OY+LE], [OX+LE,OY])
-    line([OX,OY+LE], [OX+LE,OY+2*LE])
+    def doubledot(self):
+        self.renderer.rectangle([OX+LE//2,OY+LE//4],[OX+LE//2+OI,OY+LE//4+OI])
+        self.renderer.rectangle([OX+LE//2,OY+LE*3//4],[OX+LE//2+OI,OY+LE*3//4+OI])
 
-def L():
-    line([OX,OY], [OX,OY+2*LE])
-    line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+    def WORD(self,letters, zeile):
+        #LE
+        #OI
+        #OX
+        #OY
+        LE = self.LE
+        OX = self.OX
+        OI = self.OI
+        OY = 3*int(int(LE)*int(int(zeile) - 1) + 2*OI)
+        #for i in range(len(letters)):
+            #letters[i]()
+        for l in letters:
+            if l == 'A':
+                self.A()
 
-def M():
-    line([OX+LE,OY], [OX+LE,OY+2*LE])
-    line([OX,OY], [OX,OY+2*LE])
-    line([OX,OY], [OX+LE//2,OY+2*LE])
-    line([OX+LE//2,OY+2*LE], [OX+LE,OY])
+            OX = OX + LE + OI
+        OX = OI
 
-def N():
-    line([OX,OY], [OX,OY+2*LE])
-    line([OX+LE,OY], [OX+LE,OY+2*LE])
-    line([OX,OY], [OX+LE,OY+2*LE])
-
-def O():
-    line([OX,OY], [OX+LE,OY])
-    line([OX,OY], [OX,OY+2*LE])
-    line([OX,OY+2*LE], [OX+LE,OY+2*LE])
-    line([OX+LE,OY], [OX+LE,OY+2*LE])
-
-def P():
-    line([OX,OY],[OX+LE,OY])
-    line([OX,OY],[OX,OY+2*LE])
-    line([OX+LE,OY],[OX+LE,OY+LE])
-    line([OX,OY+LE],[OX+LE,OY+LE])
-
-def Q():
-    line([OX,OY], [OX+LE,OY])
-    line([OX,OY], [OX,OY+2*LE])
-    line([OX,OY+2*LE], [OX+LE,OY+2*LE])
-    line([OX+LE,OY], [OX+LE,OY+2*LE])
-    line([OX+3//4*LE, OY+3//4*LE], [OX+5//4*LE, OY+5//4*LE])
-
-def R():
-    line([OX,OY], [OX+LE,OY])
-    line([OX,OY], [OX,OY+2*LE])
-    line([OX+LE//2,OY+LE], [OX+LE,OY+2*LE])
-    line([OX,OY+LE], [OX+LE,OY+LE])
-    line([OX+LE,OY], [OX+LE, OY+LE])
-
-def S():
-    line([OX,OY],[OX+LE,OY])
-    line([OX,OY],[OX,OY+LE])
-    line([OX,OY+LE],[OX+LE,OY+LE])
-    line([OX+LE,OY+LE],[OX+LE,OY+2*LE])
-    line([OX,OY+2*LE],[OX+LE,OY+2*LE])
-
-def T():
-    line([OX,OY],[OX+LE,OY])
-    line([OX+LE//2,OY],[OX+LE//2,OY+2*LE])
-
-def U():
-    line([OX,OY], [OX,OY+2*LE])
-    line([OX,OY+2*LE], [OX+LE,OY+2*LE])
-    line([OX+LE,OY+2*LE], [OX+LE,OY+2*LE])
-
-def V():
-    line([OX,OY], [OX+LE//2, OY + 2*LE])
-    line([OX+LE//2,OY+2*LE], [OX+LE, OY])
-
-def W():
-    line([OX+LE,OY], [OX+LE,OY+2*LE])
-    line([OX,OY], [OX,OY+2*LE])
-    line([OX,OY+2*LE], [OX+LE//2,OY])
-    line([OX+LE//2,OY], [OX+LE,OY+2*LE])
-
-def X():
-    line([OX,OY], [OX+LE, OY+2*LE])
-    line([OX, OY+2*LE],[OX+LE,OY])
-
-def Y():
-    line([OX,OY],[OX+LE//2, OY+LE])
-    line([OX+LE//2, OY+LE], [OX + LE, OY])
-    line([OX + LE//2, OY+ LE], [OX + LE//2, OY+ 2*LE])
-
-def Z():
-    line([OX,OY],[OX+LE,OY])
-    line([OX, OY+2*LE],[OX+LE,OY+2*LE])
-    line([OX+LE,OY],[OX,OY+2*LE])
-
-
-def zero():
-    O()
-
-def one():
-    line([OX+LE, OY], [OX+LE,OY+2*LE])
-
-def two():
-    line([OX,OY],[OX+LE,OY])
-    line([OX+LE,OY],[OX+LE,OY+LE])
-    line([OX,OY+LE],[OX+LE,OY+LE])
-    line([OX,OY+LE],[OX,OY+2*LE])
-    line([OX,OY+2*LE],[OX+LE,OY+2*LE])
-
-def three():
-    line([OX,OY+2*LE], [OX+LE,OY+2*LE])
-    line([OX,OY+LE], [OX+LE,OY+LE])
-    line([OX,OY], [OX+LE,OY])
-    line([OX+LE,OY], [OX+LE,OY+2*LE])
-
-def four():
-    line([OX,OY],[OX,OY+LE])
-    line([OX,OY+LE],[OX+LE,OY+LE])
-    line([OX+LE,OY],[OX+LE,OY+2*LE])
-
-def five():
-    S()
-
-def six():
-    line([OX,OY], [OX+LE,OY])
-    line([OX,OY], [OX,OY+2*LE])
-    line([OX,OY+2*LE], [OX+LE,OY+2*LE])
-    line([OX,OY+LE], [OX+LE,OY+LE])
-    line([OX+LE,OY+2*LE],[OX+LE, OY+LE])
-
-def seven():
-    one()
-    line([OX,OY],[OX,OY+LE])
-
-def eight():
-    zero()
-    line([OX,OY+LE],[OX+LE,OY+LE])
-
-def nine():
-    line([OX,OY], [OX+LE,OY])
-    line([OX,OY], [OX,OY+LE])
-    line([OX,OY+2*LE], [OX+LE,OY+2*LE])
-    line([OX,OY+LE], [OX+LE,OY+LE])
-    line([OX+LE,OY+2*LE],[OX+LE, OY])
-
-def doubledot():
-    rectangle([OX+LE//2,OY+LE//4],[OX+LE//2+OI,OY+LE//4+OI])
-    rectangle([OX+LE//2,OY+LE*3//4],[OX+LE//2+OI,OY+LE*3//4+OI])
-
-def WORD(letters, zeile):
-    global LE
-    global OI
-    global OX
-    global OY
-    OY = 3*int(int(LE)*int(int(zeile) - 1) + 2*OI)
-    for i in range(len(letters)):
-        letters[i]()
-        OX = OX + LE + OI
-    OX = OI
-
-DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH , WINDOWHEIGHT))
-
-while True:
-    for event in pygame.event.get():
-        if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
-            terminate()
-    WORD([S,P,L,A,S,H,S,C,R,E,E,N], 1)
-    #WORD([A,B,C,D,E,F,G,H,I,J,K,L], 2)
-    #WORD([M,N,O,P,Q,R,S,T,U,V,W,X], 3)
-    #WORD([Y,Z], 4)
-    WORD([G,L,O,B,A,L,G,A,M,E,J,A,M],2)
-    pygame.display.update()
+#DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH , WINDOWHEIGHT))
+#
+#while True:
+#    for event in pygame.event.get():
+#        if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
+#            terminate()
+#    WORD([S,P,L,A,S,H,S,C,R,E,E,N], 1)
+#    #WORD([A,B,C,D,E,F,G,H,I,J,K,L], 2)
+#    #WORD([M,N,O,P,Q,R,S,T,U,V,W,X], 3)
+#    #WORD([Y,Z], 4)
+#    WORD([G,L,O,B,A,L,G,A,M,E,J,A,M],2)
+#    pygame.display.update()
