@@ -2,6 +2,7 @@ from object import *
 import pygame, sys
 from pygame.locals import *
 import letters
+import time
 
 
 class Game:
@@ -87,6 +88,9 @@ class Pong(Game):
             else:
                 self.score[0] += 1
                 self.ball.reset([-1, random()])
+                self.drawscore()
+                pygame.display.update()
+                time.sleep(3)
         if self.ball.pos[0] > self.renderer.windowwidth:
             if self.ball.pos[1] in range(self.players[1].pos[1], self.players[1].pos[1] + self.renderer.barsize):
                 self.ball.pos[0] = 2 * self.renderer.windowwidth - self.ball.pos[0]
@@ -95,11 +99,14 @@ class Pong(Game):
             else:
                 self.score[1] += 1
                 self.ball.reset([1, random()])
+                self.drawscore()
+                pygame.display.update()
+                time.sleep(3)
 
     def update(self):
         self.doGameStep()
         self.render()
-        self.drawscore()
+        #self.drawscore()
         pygame.display.update()
 
     def drawscore(self):

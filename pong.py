@@ -43,12 +43,9 @@ if __name__ == "__main__":
     ponggame = Pong(renderer)
     pass
 
-#def drawscore():
-#    strscore = str(score[1])+":"+str(score[0])
-#    drscore = text_renderer.WORD(strscore,1)
 
-
-while True:
+gamerunning = True
+while gamerunning:
     for event in pygame.event.get():
         if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
             ponggame.terminate()
@@ -60,11 +57,13 @@ while True:
             for p in ponggame.players:
                 if event.key in p.controls:
                     p.changeVel(-1, event.key)
-    ponggame.update() 
-    # for i in score:
-    #     if i == 9:
-    #         text_renderer.WORD("GAMEOVER",3)
-    #         ball.velMax = 0
+    for i in ponggame.score:
+        if i == 2:
+            ponggame.text_renderer.WORD("GAMEOVER",3)
+            ponggame.ball.velMax = 0
+            #gamerunning = False
+            #time.sleep(10)
+    ponggame.update()
     #text_renderer.WORD("GLOBALGAMEJAM",3)
     #pygame.display.update()
     time.sleep(1/160)
