@@ -5,7 +5,10 @@ import numpy as np
 
 import renderer
 import letters
-
+import pygame, sys
+from pygame.locals import *
+import time
+import numpy as np
 playerList = []
 
 leftUp = K_d
