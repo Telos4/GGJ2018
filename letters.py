@@ -157,8 +157,58 @@ def WORD(letters, zeile):
         OX = OX + LE + OI
     OX = OI
 
-    
+def zero()
+    O()
 
+def one()
+    line([OX+LE, OY], [OX+LE,OY+2*LE])
+
+def two()
+    line([OX,OY],[OX+LE,OY])
+    line([OX+LE,OY],[OX+LE,OY+LE])
+    line([OX,OY+LE],[OX+LE,OY+LE])
+    line([OX,OY+LE],[OX,OY+2*LE])
+    line([OX,OY+2*LE],[OX+LE,OY+2*LE])
+
+def three()
+    line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+    line([OX,OY+LE], [OX+LE,OY+LE])
+    line([OX,OY], [OX+LE,OY])
+    line([OX+LE,OY], [OX+LE,OY+2*LE])
+
+def four()
+    line([OX,OY],[OX,OY+LE])
+    line([OX,OY+LE],[OX+LE,OY+LE])
+    line([OX+LE,OY],[OX+LE,OY+2*LE])
+
+def five()
+    S()
+
+def six()
+    line([OX,OY], [OX+LE,OY])
+    line([OX,OY], [OX,OY+2*LE])
+    line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+    line([OX,OY+LE], [OX+LE,OY+LE])
+    line([OX+LE,OY+2*LE],[OX+LE, OY+LE])
+
+def seven()
+    one()
+    line([OX,OY],[OX,OY+LE])
+
+def eight()
+    zero()
+    line([OX,OY+LE],[OX+LE,OY+LE])
+
+def nine()
+    line([OX,OY], [OX+LE,OY])
+    line([OX,OY], [OX,OY+LE])
+    line([OX,OY+2*LE], [OX+LE,OY+2*LE])
+    line([OX,OY+LE], [OX+LE,OY+LE])
+    line([OX+LE,OY+2*LE],[OX+LE, OY])
+
+def doubledot()
+    rectangle([OX+LE//2,OY+LE//4],[OX+LE//2+OI,OY+LE//4+OI])
+    rectangle([OX+LE//2,OY+LE*3//4],[OX+LE//2+OI,OY+LE*3//4+OI])
 
 DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH , WINDOWHEIGHT))
 
