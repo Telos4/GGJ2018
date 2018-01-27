@@ -7,8 +7,8 @@ class Renderer():
         self.windowwidth = windowwidth
         self.windowheight = windowheight
         self.scalingfactor = scalingfactor
-        self.barsize = windowheight//5
-
+        #self.barsize = windowheight//5
+        self.barsize = int(windowheight//2)
         self.oszi = oszi
         self.serial = serial
         
@@ -21,8 +21,8 @@ class Renderer():
         self.displaysurf = pygame.display.set_mode((self.windowwidth // self.scalingfactor, self.windowheight // self.scalingfactor))
 
     def lineto(self, end_pos, draw=True):
-        ex = int(end_pos[0])
-        ey = int(end_pos[1])
+        ex = int(abs(end_pos[0]))
+        ey = int(abs(end_pos[1]))
         if ex < 0 or ex >=2**12:
             print("WW: ex is wrong in ", end_pos)
             ex=0

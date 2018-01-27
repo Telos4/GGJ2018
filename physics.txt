@@ -1,0 +1,1 @@
+solve rxB0*vyB0-vxB0*ryB0+rxS0*m*vyS0-m*vxS0*ryS0+I*o0=rxB1*vyB1-vxB1*ryB1+rxS1*m*vyS1-m*vxS1*ryS1+I*o1,(vxB0^2+vyB0^2)+m*(vxS0^2+vyS0^2)+I/mB*o0^2=vxB1^2+vyB1^2+m*(vxS1^2+vyS1^2)+I/mB*o1^2,vxB0+m*vxS0=vxB1+vxS1,vyB0+m*vyS0=vyB1+vyS1,sqrt(vxB0^2+vyB0^2)+m*sqrt(vxS0^2+vyS0^2)=sqrt(vxB1^2+vyB1^2)+m*sqrt(vxS1^2+vyS1^2) for vxB1,vyB1,vxS1,vyS1,o1
