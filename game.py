@@ -71,6 +71,8 @@ class Pong(Game):
         self.objects.append(self.ball)
         self.obstacleList = []
 
+        self.afterScore(0)
+        self.afterScore(1)
 
     def terminate(self):
         pygame.quit()
@@ -79,6 +81,8 @@ class Pong(Game):
     def doGameStep(self):
         for p in self.players:
             p.move()
+        for o in self.obstacleList:
+            o.move()
         self.ball.move(self.obstacleList)
 
         if self.ball.pos[0] < 0:

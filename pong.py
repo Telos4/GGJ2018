@@ -39,7 +39,7 @@ if __name__ == "__main__":
     ponggame = Pong(renderer)
     pass
 
-    splashscreen = True
+    splashscreen = False
     gamerunning = True
     while gamerunning:
         t_end = time.time() + 5

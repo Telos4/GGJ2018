@@ -20,6 +20,22 @@ class OBSTACLE(Object):
         Object.__init__(self,None,renderer)
         self.start = start
         self.end = end
+        self.vel = 0.0
+        self.movedir = np.array([0.0, 0.0])
+
+    def move(self):
+        self.start = self.start + self.movedir
+        self.end = self.end + self.movedir
+
+        if min(self.start[1], self.end[1]) < 0:
+            self.movedir[1] = -self.movedir[1]
+        if max(self.start[1],self.end[1]) > self.renderer.windowheight:
+            self.movedir[1] = -self.movedir[1]
+        if min(self.start[0],self.end[0]) < 0:
+            self.movedir[0] = -self.movedir[0]
+        if max(self.start[0],self.end[0]) > self.renderer.windowwidth:
+            self.movedir[0] = -self.movedir[0]
+
     def draw(self):
         self.renderer.line(self.start,self.end)
 
@@ -54,7 +70,12 @@ class BALL(Object):
             y = y0 + mo*(x-x0)
             cross = np.array([x,y])
             if min(u0,u1) < x < max(u0,u1):
-                if min(y0,y1) < y < max(y0,y1):
+                if min(y0,y1) < y < max(y0,y1): # if collision occurs
+
+                    # push obstacle out of the way
+                    obst.vel += self.vel
+                    obst.movedir = self.movedir
+
                     a = posNew-cross
                     b = np.array([x1-x0,y1-y0])
                     b = b/np.linalg.norm(b)
@@ -62,7 +83,8 @@ class BALL(Object):
                     posMirror = 2*cross+2*X-posNew
                     posNew = posMirror
                     self.movedir = posMirror-cross
-                    self.vel *= 1.5
+                    self.vel *= 1.1
+
 
         self.pos = posNew
 
