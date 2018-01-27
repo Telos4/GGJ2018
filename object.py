@@ -79,7 +79,7 @@ class BALL(Object):
 
 
     def draw(self):
-        self.renderer.line(self.pos, np.array(self.pos) - self.vel * np.array(self.movedir))
+        self.renderer.line(self.pos, np.array(self.pos) - self.vel * np.array(self.movedir)/(np.linalg.norm(self.movedir)))
         self.renderer.rectangle(self.pos,np.array(self.pos) + np.array(self.size))
 
     def reset(self,dir):
