@@ -1,14 +1,18 @@
+################
+# encoding UTF-8
+################
+
 import renderer
 
 class TEXT():
-    #LE = 20
-    #OI = 5
-    #OX = OI
-    #OY = OI
+    """
+    Buchstaben und Zahlen zeichnen
+    """
+
     def __init__(self,renderer):
         self.renderer = renderer
         self.LE = 200
-        self.OI = 5
+        self.OI = 50
         self.OX = self.OI
         self.OY = self.OI
 
@@ -23,7 +27,7 @@ class TEXT():
         self.renderer.line([self.OX,self.OY+self.LE],[self.OX+self.LE,self.OY+self.LE])
         self.renderer.line([self.OX,self.OY],[self.OX+self.LE,self.OY])
         self.renderer.line([self.OX+self.LE,self.OY],[self.OX+self.LE,self.OY+2*self.LE])
-        self.renderer.line([self.OX,self.OY+2*self.self.LE],[self.OX+self.LE,self.OY+2*self.LE])
+        self.renderer.line([self.OX,self.OY+2*self.LE],[self.OX+self.LE,self.OY+2*self.LE])
 
     def C(self):
         self.renderer.line([self.OX,self.OY], [self.OX+self.LE,self.OY])
@@ -74,7 +78,7 @@ class TEXT():
         self.renderer.line([self.OX,self.OY+self.LE], [self.OX+self.LE,self.OY+2*self.LE])
 
     def L(self):
-        self.renderer.line([self.OX,self.OY], [self.OX,self.OY+2*self.self.self.LE])
+        self.renderer.line([self.OX,self.OY], [self.OX,self.OY+2*self.LE])
         self.renderer.line([self.OX,self.OY+2*self.LE], [self.OX+self.LE,self.OY+2*self.LE])
 
     def M(self):
@@ -147,7 +151,7 @@ class TEXT():
     def Y(self):
         self.renderer.line([self.OX,self.OY],[self.OX+self.LE//2, self.OY+self.LE])
         self.renderer.line([self.OX+self.LE//2, self.OY+self.LE], [self.OX + self.LE, self.OY])
-        self.renderer.line([self.OX + self.LE//2, self.OY+ self.LE], [self.OX + self.LE//2, self.OY+ 2*self.LE])
+        self.renderer.line([self.OX+self.LE//2, self.OY+self.LE], [self.OX + self.LE//2, self.OY+ 2*self.LE])
 
     def Z(self):
         self.renderer.line([self.OX,self.OY],[self.OX+self.LE,self.OY])
@@ -210,7 +214,7 @@ class TEXT():
 
     def WORD(self,letters, zeile):
         LE = self.LE
-        self.OX = self.renderer.windowwidth/2 - self.LE*len(letters)/2
+        self.OX = self.renderer.windowwidth/2 - self.LE*len(letters)/2 - self.OI*(len(letters)-1)/2
         OI = self.OI
         self.OY = 3*int(int(LE)*int(int(zeile) - 1) + 2*OI)
         for l in letters:
