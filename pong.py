@@ -6,7 +6,7 @@ import numpy as np
 from game import Pong
 
 import renderer
-from letters import TEXT
+import letters
 
 #playerList = []
 
@@ -37,10 +37,7 @@ if __name__ == "__main__":
                     print("trying next configuration")
     except:
         print("Oscilloscope not connected!")
-
     renderer = renderer.Renderer(serial=ser, oszi=oszi)
-    text_renderer = TEXT(renderer)
-
     # init Game
     #playerList.append(PLAYER(True, renderer))
     #playerList.append(PLAYER(False, renderer))
