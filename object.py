@@ -51,6 +51,13 @@ class BALL(Object):
         self.movedir = np.array([random(),random()])
         self.velBallDefault = 20
         self.vel = self.velBallDefault
+
+        if self.renderer.oszi == True:
+            self.velMax = 100
+        else:
+            self.velMax = 50
+        self.speedup = 1.25  # how much faster does the ball get on a collision
+
     def move(self,obstacleList):
         posOld = self.pos
         posNew = posOld + self.movedir/np.linalg.norm(self.movedir)*self.vel
@@ -83,7 +90,9 @@ class BALL(Object):
                     posMirror = 2*cross+2*X-posNew
                     posNew = posMirror
                     self.movedir = posMirror-cross
-                    self.vel *= 1.1
+
+                    # collision with obstacle speedup and enforcing of maximum velocity
+                    self.vel = min(self.vel * self.speedup, self.velMax)
 
 
         self.pos = posNew
@@ -97,7 +106,6 @@ class BALL(Object):
             self.movedir[1] = -self.movedir[1]
         for i in range(2):
             self.pos[i] = int(self.pos[i]+0.5)
-
 
 
     def draw(self):
