@@ -22,7 +22,7 @@ class BALL(Object):
         self.pos = np.array([self.renderer.windowwidth/2,self.renderer.windowheight/2])
         self.size = size
         self.movedir = np.array([random(),random()])
-        self.velBallDefault = 10
+        self.velBallDefault = 50
         self.velMax = self.velBallDefault
 
     def move(self):
