@@ -88,6 +88,9 @@ class Pong(Game):
                 self.ball.velMax *= 1.1
             else:
                 self.score[0] += 1
+                start = np.array([np.random.randint(0,self.renderer.windowwidth),np.random.randint(0,self.renderer.windowheight)])
+                end = np.array([np.random.randint(0,self.renderer.windowwidth),np.random.randint(0,self.renderer.windowheight)])
+                self.obstacleList.append(OBSTACLE(self.renderer,start,end))
                 self.ball.reset([-1, random()])
                 self.drawscore()
                 pygame.display.update()
@@ -99,6 +102,9 @@ class Pong(Game):
                 self.ball.velMax *= 1.1
             else:
                 self.score[1] += 1
+                start = np.array([np.random.randint(0,self.renderer.windowwidth),np.random.randint(0,self.renderer.windowheight)])
+                end = np.array([np.random.randint(0,self.renderer.windowwidth),np.random.randint(0,self.renderer.windowheight)])
+                self.obstacleList.append(OBSTACLE(self.renderer,start,end))
                 self.ball.reset([1, random()])
                 self.drawscore()
                 pygame.display.update()
@@ -107,6 +113,8 @@ class Pong(Game):
     def update(self):
         self.doGameStep()
         self.render()
+        for obst in self.obstacleList:
+            obst.draw()
         #self.drawscore()
         pygame.display.update()
 
