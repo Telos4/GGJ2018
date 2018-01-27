@@ -27,6 +27,7 @@ BGCOLOR = (0,0,0)
 LINECOLOR = (000,255,000)
 WINDOWHEIGHT = 4000
 WINDOWWIDTH = 4000
+SCALING_FACTOR = 10 # how much larger is the osci-display compared to the pygame surface
 BARSIZE = WINDOWHEIGHT//5
 pos = [WINDOWWIDTH//2,WINDOWHEIGHT//2]
 length = 100
@@ -98,7 +99,7 @@ class BALL():
 
 # init Game
 pygame.init()
-DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH , WINDOWHEIGHT))
+DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH//SCALING_FACTOR , WINDOWHEIGHT//SCALING_FACTOR))
 playerList.append(PLAYER(True))
 playerList.append(PLAYER(False))
 ball = BALL()
@@ -111,7 +112,7 @@ def line(start_pos,end_pos):
     ey = int(end_pos[1])
     if OSZI:
         ser.write(((sx<<48)+(sy<<32)+(ex<<16)+(ey)).to_bytes(8,'big'))
-    pygame.draw.line(DISPLAYSURF,LINECOLOR,start_pos,end_pos)
+    pygame.draw.line(DISPLAYSURF,LINECOLOR,np.array(start_pos)/SCALING_FACTOR,np.array(end_pos)/SCALING_FACTOR)
 
 def rectangle(upLeft,downRight):
     line(upLeft,[upLeft[0],downRight[1]])
