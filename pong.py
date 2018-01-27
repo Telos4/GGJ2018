@@ -127,6 +127,7 @@ if __name__ == "__main__":
                     serial_port = line.rstrip()
                     ser = serial.Serial(serial_port, 115200, timeout=10)
                     oszi = True
+                    print("oszi found")
                     break
                 except:
                     print("trying next configuration")
@@ -157,4 +158,4 @@ if __name__ == "__main__":
         doGameStep(renderer)
         drawGame(renderer)
         pygame.display.update()
-        time.sleep(1/60)
+        time.sleep(1/20)

@@ -1,3 +1,8 @@
+import pygame
+
+WINDOWWIDTH = 4000
+WINDOWHEIGHT = 4000
+
 LE = 20
 OI = 5
 OX = OI
@@ -163,9 +168,9 @@ def WORD(letters, zeile):
 DISPLAYSURF = pygame.display.set_mode((WINDOWWIDTH , WINDOWHEIGHT))
 
 while True:
-    for event in pygame.event.get():
-        if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
-            terminate()
+    # for event in pygame.event.get():
+    #     if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
+    #         terminate()
     WORD([S,P,L,A,S,H,S,C,R,E,E,N], 1)
     #WORD([A,B,C,D,E,F,G,H,I,J,K,L], 2)
     #WORD([M,N,O,P,Q,R,S,T,U,V,W,X], 3)
