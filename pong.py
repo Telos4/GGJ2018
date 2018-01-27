@@ -3,6 +3,7 @@ from pygame.locals import *
 import time
 import numpy as np
 
+OSZI = False
 try:
     oszi_params = open('oszi_params.txt', 'r')
     print(oszi_params)
@@ -13,13 +14,12 @@ try:
             try:
                 serial_port = line.rstrip()
                 ser = serial.Serial(serial_port, 115200, timeout=10)
+                OSZI = True
                 break
             except:
                 print("trying next configuration")
-    OSZI = True
 except:
     print("Oscilloscope not connected!")
-    OSZI = False # output is Oszi or Pygame
 
 
 
