@@ -2,16 +2,31 @@ import pygame, sys
 from pygame.locals import *
 import time
 import numpy as np
-OSZI = False # output is Oszi or Pygame
-if OSZI:
+
+try:
+    oszi_params = open('oszi_params.txt', 'r')
+    print(oszi_params)
+
     import serial
+    for line in oszi_params:
+        if line[0] != "#":
+            try:
+                serial_port = line.rstrip()
+                ser = serial.Serial(serial_port, 115200, timeout=10)
+                break
+            except:
+                print("trying next configuration")
+    OSZI = True
+except:
+    print("Oscilloscope not connected!")
+    OSZI = False # output is Oszi or Pygame
 
 
 
 BGCOLOR = (0,0,0)
 LINECOLOR = (000,255,000)
-WINDOWHEIGHT = 400
-WINDOWWIDTH = 400
+WINDOWHEIGHT = 4000
+WINDOWWIDTH = 4000
 BARSIZE = WINDOWHEIGHT//5
 pos = [WINDOWWIDTH//2,WINDOWHEIGHT//2]
 length = 100
@@ -24,10 +39,6 @@ leftUp = K_d
 leftDown = K_f
 rightUp = K_k
 rightDown = K_j
-
-if OSZI:
-    ser=serial.Serial('/dev/ttyACM0', 115200, timeout=10)
-
 
 
 class PLAYER:

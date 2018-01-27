@@ -1,0 +1,9 @@
+# possible serial ports
+COM1
+COM2
+COM3
+COM4
+COM5
+/dev/ttyACM0
+/dev/ttyACM1
+
