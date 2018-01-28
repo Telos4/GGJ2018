@@ -126,14 +126,42 @@ class BALL(Object):
 
 
         if self.pos[1] < 0:
-            self.pos[1] = -self.pos[1]
+            if self.pos[0] < 0:
+                self.edgecollision(0,0)
+                self.pos[0] = -1
+            elif self.pos[0] > self.renderer.windowwidth:
+                self.edgecollision(self.renderer.windowwidth,0)
+                self.pos[0] = self.renderer.windowwidth 
+            else:
+                self.pos[1] = -self.pos[1]
             self.movedir[1] = -self.movedir[1]
         if self.pos[1] > self.renderer.windowheight:
-            self.pos[1] = 2 * self.renderer.windowheight - self.pos[1]
+            if self.pos[0] < 0:
+                self.edgecollision(0,self.renderer.windowheight)
+                self.pos[0] = -1
+            elif self.pos[0] > self.renderer.windowwidth:
+                self.edgecollision(self.renderer.windowwidth,self.renderer.windowheight)
+                self.pos[0] = self.renderer.windowwidth 
+            else:
+                self.pos[1] = 2 * self.renderer.windowheight - self.pos[1]
             self.movedir[1] = -self.movedir[1]
-        for i in range(2):
-            self.pos[i] = int(self.pos[i]+0.5)
+        # for i in range(2):
+            # self.pos[i] = int(self.pos[i]+0.5)
 
+    def edgecollision(self,x,y):
+        print("doublecoll")
+        v = self.vel / np.linalg.norm(self.movedir)
+        vx = v * self.movedir[0]
+        vy = v * self.movedir[1]
+        vvec = np.array([vx,vy])
+        r0 = self.pos-vvec
+        ts = (y-r0[1])/vy
+        xs = r0[0]+(y-r0[0])*vx/vy
+        t = (x - xs)/(vx)
+        yfinal = y - vy/vx *(x-xs)
+        self.pos[1] = yfinal
+        #self.movedir[1]=0
+        print(yfinal)
 
     def draw(self):
         self.renderer.line(self.pos, np.array(self.pos) - self.vel * np.array(self.movedir)/(np.linalg.norm(self.movedir)))

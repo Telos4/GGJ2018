@@ -40,7 +40,7 @@ if __name__ == "__main__":
     ponggame = Pong(renderer,obstaclebool)
     pass
 
-    splashscreen = True
+    splashscreen = False
     gamerunning = True
     modscreen = True
     backsoundbool = True
@@ -67,16 +67,15 @@ if __name__ == "__main__":
                     value = []
                     renderer.update()
                     time.sleep(2.0/60.0)
-               
             #time.sleep(5)
 
 
             #Hilfsscreen
             renderer.clearscreen()
             ponggame.text_renderer.WORD("PLAYER 1",1)
-            ponggame.text_renderer.WORD("UP W  DOWN S",2)
+            ponggame.text_renderer.WORD("UP D  DOWN F",2)
             ponggame.text_renderer.WORD("PLAYER 2",4)
-            ponggame.text_renderer.WORD("UP  DOWN",5)
+            ponggame.text_renderer.WORD("UP K DOWN J",5)
             renderer.update()
             time.sleep(5)
 
