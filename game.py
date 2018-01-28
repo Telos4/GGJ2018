@@ -14,6 +14,7 @@ class Game:
 
         # List of all displayed objects
         self.objects = []
+        self.effects = []
         self.players = []
 
         self.renderer = renderer
@@ -28,6 +29,9 @@ class Game:
 
         for object in self.objects:
             object.draw()
+
+        for effect in self.effects:
+            effect.draw()
         #self.renderer.update()
 
 
@@ -108,7 +112,8 @@ class Pong(Game):
                     pygame.mixer.Channel(2).play(soundcoll, loops=0, maxtime=0, fade_ms=0)
 
                     # play collision effect
-                    #effect_line = LineObject(self.players[player].pos, self.renderer)
+                    #effect = LineEffect(self.players[player].pos + np.array([0,100]), self.renderer)
+                    #self.effects.append(effect)
                     #self.renderer.line(self.players[player].pos, self.players[player].pos + np.array([0, 100]))
                     #effect_line.draw()
 

@@ -159,3 +159,11 @@ class LineObject(Object):
 
     def draw(self):
         self.renderer.line(self.pos,[self.pos[0],self.pos[1]+self.renderer.barsize])
+
+class LineEffect(Object):
+    def __init__(self, pos, renderer, pos2):
+        Object.__init__(self, pos=pos, renderer=renderer)
+        self.pos2 = pos2
+
+    def draw(self):
+        self.renderer.line(self.pos,self.pos2)
