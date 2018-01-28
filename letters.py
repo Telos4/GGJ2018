@@ -3,11 +3,16 @@
 ################
 
 import renderer
+import time
+
+delay = 1
 
 class TEXT():
     """
     Buchstaben und Zahlen zeichnen
     """
+
+    global delay
 
     def __init__(self,renderer):
         self.renderer = renderer
@@ -133,7 +138,7 @@ class TEXT():
     def U(self):
         self.renderer.line([self.OX,self.OY], [self.OX,self.OY+2*self.LE])
         self.renderer.line([self.OX,self.OY+2*self.LE], [self.OX+self.LE,self.OY+2*self.LE])
-        self.renderer.line([self.OX+self.LE,self.OY+2*self.LE], [self.OX+self.LE,self.OY+2*self.LE])
+        self.renderer.line([self.OX+self.LE,self.OY], [self.OX+self.LE,self.OY+2*self.LE])
 
     def V(self):
         self.renderer.line([self.OX,self.OY], [self.OX+self.LE//2, self.OY + 2*self.LE])
@@ -213,9 +218,12 @@ class TEXT():
         self.renderer.rectangle([self.OX+self.LE//2,self.OY+self.LE*2/3],[self.OX+self.LE//2+self.OI,self.OY+self.LE*2/3+self.OI])
         self.renderer.rectangle([self.OX+self.LE//2,self.OY+self.LE*4//3],[self.OX+self.LE//2+self.OI,self.OY+self.LE*4//3+self.OI])
 
+    def space(self):
+        self.OX = self.OX + self.LE/2
+
     def WORD(self,letters, zeile):
         LE = self.LE
-        self.OX = self.renderer.windowwidth/2 - self.LE*len(letters)/2 - self.OI*(len(letters)-1)/2
+        self.OX = self.renderer.windowwidth/2 - self.LE*(len(letters)+1)/2 - self.OI*(len(letters)-1)/2
         OI = self.OI
         self.OY = 3*int(int(LE)*int(int(zeile) - 1) + 2*OI)
         for l in letters:
@@ -293,5 +301,7 @@ class TEXT():
                 self.zero()
             elif l == ':':
                 self.doubledot()
+            elif l == ' ':
+                self.space()
             self.OX = self.OX + self.LE + self.OI
         self.OX = self.OI

@@ -28,6 +28,7 @@ rightUp = K_k
 rightDown = K_j
 
 
+
 # player class for handling player input
 class PLAYER:
     def __init__(self,left, renderer):
@@ -59,8 +60,9 @@ class PLAYER:
 
 
 class Pong(Game):
-    def __init__(self, renderer):
+    def __init__(self, renderer, obstaclebool):
         Game.__init__(self,renderer)
+        self.obstaclebool = obstaclebool
         self.players.append(PLAYER(True, renderer))
         self.players.append(PLAYER(False, renderer))
 
@@ -94,6 +96,8 @@ class Pong(Game):
                 y0 = self.ball.pos[1]-(self.ball.pos[0]-player*self.renderer.windowwidth)*self.ball.movedir[1]/self.ball.movedir[0]
                 ypl = self.players[player].pos[1]
                 if  ypl < y0 < ypl+self.renderer.barsize:
+                    soundcoll = pygame.mixer.Sound("collision.wav")
+                    soundcoll.play()
                     self.ball.movedir = self.dirAfterCollisionPlayer(player,y0)
                     self.ball.pos = np.array([player*self.renderer.windowwidth,y0])
                     self.ball.vel = min(self.ball.vel * self.ball.speedup, self.ball.velMax)
@@ -108,17 +112,19 @@ class Pong(Game):
         return reflected_direction
 
     def afterScore(self,winner):
-                self.score[winner] += 1
-                ww = self.renderer.windowwidth
-                start = np.array([np.random.randint(ww/3,ww*2./3.),np.random.randint(ww/3,2*ww/3.)])
-                dir = np.array([random(),random()])
-                length = ww/3
-                end = start + length*dir/np.linalg.norm(dir)
-                self.obstacleList.append(OBSTACLE(self.renderer,start,end))
-                self.ball.reset([-1+2*winner, random()])
-                self.drawscore()
-                pygame.display.update()
-                time.sleep(3)
+        global obstaclebool
+        self.score[winner] += 1
+        ww = self.renderer.windowwidth
+        start = np.array([np.random.randint(ww/3,ww*2./3.),np.random.randint(ww/3,2*ww/3.)])
+        dir = np.array([random(),random()])
+        length = ww/3
+        end = start + length*dir/np.linalg.norm(dir)
+        if self.obstaclebool == True:
+            self.obstacleList.append(OBSTACLE(self.renderer,start,end))
+        self.ball.reset([-1+2*winner, random()])
+        self.drawscore()
+        pygame.display.update()
+        time.sleep(3)
 
 
     def update(self):
@@ -128,9 +134,12 @@ class Pong(Game):
             obst.draw()
 
         for i in self.score:
-            if i == 5:
+            if i == 4:
+                self.renderer.clearscreen()
                 self.text_renderer.WORD("GAMEOVER", 3)
                 self.ball.vel = 0
+                pygame.display.update()
+                time.sleep(5)
                 return False
 
         pygame.display.update()
