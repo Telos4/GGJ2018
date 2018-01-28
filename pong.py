@@ -56,12 +56,16 @@ if __name__ == "__main__":
                     renderer.clearscreen()
                     ponggame.text_renderer.WORD("GLOBALGAMEJAM",2)
                     ponggame.text_renderer.WORD("2018",3)
-                    for n in range(0,40):
-                        value.append([n*100,int(math.sin(n*0.5+0.01*t)*500)+3000])
-                    for n in range(0,39):
-                        renderer.line(value[n],value[n+1])
+                    discretization = 50
+                    for n in range(0,discretization):
+                        value.append([n*renderer.windowwidth/discretization,int(math.sin(n*0.75+0.5*t)*500*math.sin(0.1*n-0.1*t))+3000])
+                    renderer.lineto(value[0], False)
+                    for n in range(1,discretization):
+                        renderer.lineto(value[n],True)
+                    #renderer.lineto([0, 0], False)
                     value = []
                     pygame.display.update()
+                    time.sleep(2.0/60.0)
                
             #time.sleep(5)
 
@@ -77,12 +81,13 @@ if __name__ == "__main__":
 
             #Modscreen
             pygame.event.clear()
-            
+            renderer.clearscreen()
+            ponggame.text_renderer.WORD("MODS", 1)
+            ponggame.text_renderer.WORD("NORMAL 1", 3)
+            ponggame.text_renderer.WORD("OBSTACLES 2", 4)
+
             while modscreen == True:
-                renderer.clearscreen()
-                ponggame.text_renderer.WORD("MODS",1)
-                ponggame.text_renderer.WORD("NORMAL 1",3)
-                ponggame.text_renderer.WORD("OBSTACLES 2",4)
+
                 #ponggame.text_renderer.WORD("OBSTACLES SQUARES   3",4)
                 pygame.display.update()
                 #event = pygame.event.wait()
@@ -90,7 +95,7 @@ if __name__ == "__main__":
                     if event.type == KEYUP and event.key == K_1:
                         obstaclebool = False
                         modscreen = False
-                        
+
                     elif event.type == KEYUP and event.key == K_2:
                         obstaclebool = True
                         modscreen = False
