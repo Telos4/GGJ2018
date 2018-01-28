@@ -1,4 +1,6 @@
 import numpy as np
+import pygame
+from pygame.locals import *
 
 class Object():
     def __init__(self, pos, renderer, name=''):
@@ -98,6 +100,8 @@ class BALL(Object):
 
         # if a collision occurred handle it
         if not (min_collision_object == None):
+            coll_obstacle = pygame.mixer.Sound("collision_obstacle.wav")
+            pygame.mixer.Channel(4).play(coll_obstacle)
             obst = min_collision_object
             x0 = obst.start[0]
             y0 = obst.start[1]
