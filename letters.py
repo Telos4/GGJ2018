@@ -14,10 +14,10 @@ class TEXT():
 
     global delay
 
-    def __init__(self,renderer):
+    def __init__(self,renderer,param):
         self.renderer = renderer
-        self.LE = 200
-        self.OI = 50
+        self.LE = param[0] #200
+        self.OI = param[1] #50
         self.OX = self.OI
         self.OY = self.OI
 
@@ -71,7 +71,7 @@ class TEXT():
         self.renderer.line([self.OX+self.LE,self.OY],[self.OX+self.LE,self.OY+2*self.LE])
 
     def I(self):
-        self.renderer.line([self.OX,self.OY], [self.OX,self.OY+2*self.LE])
+        self.renderer.line([self.OX+self.LE/2,self.OY], [self.OX+self.LE/2,self.OY+2*self.LE])
 
     def J(self):
         self.renderer.line([self.OX+self.LE,self.OY], [self.OX+self.LE,self.OY+2*self.LE])
@@ -221,6 +221,30 @@ class TEXT():
     def space(self):
         self.OX = self.OX + self.LE/2
 
+    def arrowup(self):
+        self.renderer.line([self.OX+self.LE/2,self.OY],[self.OX+self.LE/2, self.OY+self.LE*2])
+        self.renderer.line([self.OX,self.OY+self.LE/3],[self.OX+self.LE/3, self.OY])
+        self.renderer.line([self.OX+self.LE/2, self.OY],[self.OX+self.LE,self.OY+self.LE/3])
+
+    def arrowdown(self):
+        self.renderer.line([self.OX+self.LE/2,self.OY],[self.OX+self.LE/2, self.OY+self.LE*2])
+        self.renderer.line([self.OX,self.OY+self.LE*2/3],[self.OX+self.LE/3, self.OY+self.LE*2])
+        self.renderer.line([self.OX+self.LE/2, self.OY+self.LE*2],[self.OX+self.LE,self.OY+self.LE*2/3])
+    
+    def imaginaerraumi(self):
+        self.renderer.line([self.OX+self.LE,self.OY+self.LE],[self.OX+self.LE,self.OY+self.LE*2])
+        self.renderer.line([self.OX+self.LE*4/5,self.OY+self.LE*2],[self.OX+self.LE,self.OY+self.LE*2])
+        self.renderer.rectangle([self.OX+self.LE-self.OI/2,self.OY+self.LE*2/3],[self.OI/2+self.OX+self.LE,self.OY+self.LE*2/3+self.OI])
+    
+    def imaginaerraumr(self):
+        self.renderer.line([self.OX,self.OY], [self.OX+self.LE,self.OY])
+        self.renderer.line([self.OX,self.OY], [self.OX,self.OY+2*self.LE])
+        self.renderer.line([self.OX+self.LE//2,self.OY+self.LE], [self.OX+self.LE,self.OY+2*self.LE])
+        self.renderer.line([self.OX,self.OY+self.LE], [self.OX+self.LE,self.OY+self.LE])
+        self.renderer.line([self.OX+self.LE,self.OY], [self.OX+self.LE, self.OY+self.LE])
+        self.renderer.line([self.OX+self.LE/6,self.OY], [self.OX+self.LE/6,self.OY+self.LE*2])
+        
+
     def WORD(self,letters, zeile):
         LE = self.LE
         self.OX = self.renderer.windowwidth/2 - self.LE*(len(letters)+1)/2 - self.OI*(len(letters)-1)/2
@@ -303,5 +327,13 @@ class TEXT():
                 self.doubledot()
             elif l == ' ':
                 self.space()
+            elif l =='+':
+                self.arrowup()
+            elif l == '-':
+                self.arrowdown()
+            elif l == 'i':
+                self.imaginaerraumi()
+            elif l == 'r':
+                self.imaginaerraumr()
             self.OX = self.OX + self.LE + self.OI
         self.OX = self.OI

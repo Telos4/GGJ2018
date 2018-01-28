@@ -7,12 +7,19 @@ import time
 
 class Game:
     def __init__(self, renderer):
+        # init pygame
+        pygame.mixer.pre_init()
+        pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
+        pygame.init()
+
         # List of all displayed objects
         self.objects = []
         self.players = []
 
         self.renderer = renderer
-        self.text_renderer = letters.TEXT(renderer)
+        self.text_renderer = letters.TEXT(renderer,[200,50])
+        self.credits_renderer = letters.TEXT(renderer,[120,50])
+        self.imag_renderer = letters.TEXT(renderer,[1000,150])
 
         self.score = [0,0]
 
@@ -21,14 +28,13 @@ class Game:
 
         for object in self.objects:
             object.draw()
-        self.renderer.update()
-
-leftUp = K_w
-leftDown = K_s
-rightUp = K_UP
-rightDown = K_DOWN
+        #self.renderer.update()
 
 
+leftUps = [K_w, K_d]
+leftDowns = [K_s, K_f]
+rightUps = [K_UP, K_k]
+rightDowns = [K_DOWN, K_j]
 
 # player class for handling player input
 class PLAYER:
@@ -41,16 +47,16 @@ class PLAYER:
         self.vel = 100
         if left:
             self.pos = playerLeftPos
-            self.controls = [leftUp,leftDown]
+            self.controls = [leftUps,leftDowns]
         else:
             self.pos = playerRightPos
-            self.controls = [rightUp,rightDown]
+            self.controls = [rightUps,rightDowns]
         self.player_object = LineObject(self.pos, self.renderer)
 
     def changeVel(self,dir,key):
-        if key == self.controls[0]: #accelerate up
+        if key in self.controls[0]: #accelerate up
             self.movedir -= 1*dir
-        if key == self.controls[1]: #accelerate down
+        if key in self.controls[1]: #accelerate down
             self.movedir += 1*dir
     def move(self):
         self.pos[1] += self.movedir*self.vel
@@ -98,8 +104,14 @@ class Pong(Game):
                 print(y0)
                 ypl = self.players[player].pos[1]
                 if  ypl < y0 < ypl+self.renderer.barsize:
+                    # play collision sound
                     soundcoll = pygame.mixer.Sound("collision.wav")
-                    pygame.mixer.Channel(2).play(soundcoll)
+                    pygame.mixer.Channel(2).play(soundcoll, loops=0, maxtime=0, fade_ms=0)
+
+                    # play collision effect
+
+
+
                     self.ball.movedir = self.dirAfterCollisionPlayer(player,y0)
                     self.ball.pos = np.array([player*self.renderer.windowwidth,y0])
                     self.ball.vel = min(self.ball.vel * self.ball.speedup, self.ball.velMax)
@@ -116,6 +128,8 @@ class Pong(Game):
     def afterScore(self,winner):
         global obstaclebool
         self.score[winner] += 1
+        score_sound = pygame.mixer.Sound("score.wav")
+        pygame.mixer.Channel(5).play(score_sound)
         ww = self.renderer.windowwidth
         start = np.array([np.random.randint(ww/3,ww*2./3.),np.random.randint(ww/3,2*ww/3.)])
         dir = np.array([random(),random()])
@@ -136,12 +150,43 @@ class Pong(Game):
             obst.draw()
 
         for i in self.score:
-            if i == 4:
+            if i == 2:
                 self.renderer.clearscreen()
+                pygame.mixer.Channel(1).fadeout(500)
+                gameoversound = pygame.mixer.Sound("gameover.wav")
+                pygame.mixer.Channel(3).play(gameoversound, loops = -1)
                 self.text_renderer.WORD("GAMEOVER", 3)
                 self.ball.vel = 0
                 self.renderer.update()
+                time.sleep(10)
+                pygame.mixer.Channel(3).fadeout(2000)
+                time.sleep(2)
+
+                #imaginaerraum screen
+                self.renderer.clearscreen()
+                self.imag_renderer.WORD("ir",1)
+                self.renderer.update()
                 time.sleep(5)
+
+
+                #credit screen
+                self.renderer.clearscreen()
+                #self.credits_renderer.WORD("NICO STUHLMUELLER",2)
+                #self.credits_renderer.WORD("SIMON PIRKELMANN",3)
+                #self.credits_renderer.WORD("CLEMENS BUCHACHER",4)
+                #self.credits_renderer.WORD("DANIEL HEINLEIN",5)
+                #self.credits_renderer.WORD("SOFIE KRIETENSTEIN",6)
+                #self.credits_renderer.WORD("STEPHAN MESSLINGER",7)
+                self.credits_renderer.WORD("NICO S",2)
+                self.credits_renderer.WORD("SIMON P",3)
+                self.credits_renderer.WORD("CLEMENS B",4)
+                self.credits_renderer.WORD("DANIEL H",5)
+                self.credits_renderer.WORD("SOFIE K",6)
+                self.credits_renderer.WORD("STEPHAN M",7)
+                self.renderer.update()
+                time.sleep(5)
+
+
                 return False
 
         self.renderer.update()

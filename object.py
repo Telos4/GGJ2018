@@ -1,4 +1,6 @@
 import numpy as np
+import pygame
+from pygame.locals import *
 
 class Object():
     def __init__(self, pos, renderer, name=''):
@@ -20,12 +22,14 @@ class OBSTACLE(Object):
         Object.__init__(self,None,renderer)
         self.start = start
         self.end = end
-        self.vel = 0.0
+
         self.movedir = np.array([0.0, 0.0])
+        self.velMax = 30
+        self.vel = 0
 
     def move(self):
-        self.start = self.start + self.movedir
-        self.end = self.end + self.movedir
+        self.start = self.start + self.movedir * self.vel
+        self.end = self.end + self.movedir * self.vel
 
         if min(self.start[1], self.end[1]) < 0:
             self.movedir[1] = -self.movedir[1]
@@ -94,32 +98,37 @@ class BALL(Object):
                         min_distance = current_distance
                         min_collision_object = obst
 
-            # if a collision occurred handle it
-            if not (min_collision_object == None):
-                obst = min_collision_object
-                x0 = obst.start[0]
-                y0 = obst.start[1]
-                x1 = obst.end[0]
-                y1 = obst.end[1]
-                mo = (y1 - y0) / (x1 - x0)
-                x = (y0 - v0 + mb * u0 - mo * x0) / (mb - mo)
-                y = y0 + mo * (x - x0)
-                cross = np.array([x, y])
+        # if a collision occurred handle it
+        if not (min_collision_object == None):
+            coll_obstacle = pygame.mixer.Sound("collision_obstacle.wav")
+            pygame.mixer.Channel(4).play(coll_obstacle)
+            obst = min_collision_object
+            x0 = obst.start[0]
+            y0 = obst.start[1]
+            x1 = obst.end[0]
+            y1 = obst.end[1]
+            mo = (y1 - y0) / (x1 - x0)
+            x = (y0 - v0 + mb * u0 - mo * x0) / (mb - mo)
+            y = y0 + mo * (x - x0)
+            cross = np.array([x, y])
 
-                # push obstacle out of the way
-                obst.vel += self.vel
-                obst.movedir = self.movedir
+            # push obstacle out of the way
+            obst.vel = min(obst.vel + 0.05 * self.vel, obst.velMax)
+            obst.movedir += self.movedir
+            obst.movedir/=np.linalg.norm(obst.movedir)
 
-                a = posNew-cross
-                b = np.array([x1-x0,y1-y0])
-                b = b/np.linalg.norm(b)
-                X = np.dot(a,b)*b
-                posMirror = 2*cross+2*X-posNew
-                posNew = posMirror
-                self.movedir = posMirror-cross
+            #print("collission\n")
 
-                # collision with obstacle speedup and enforcing of maximum velocity
-                self.vel = min(self.vel * self.speedup, self.velMax)
+            a = posNew-cross
+            b = np.array([x1-x0,y1-y0])
+            b = b/np.linalg.norm(b)
+            X = np.dot(a,b)*b
+            posMirror = 2*cross+2*X-posNew
+            posNew = posMirror
+            self.movedir = posMirror-cross
+
+            # collision with obstacle speedup and enforcing of maximum velocity
+            self.vel = min(self.vel * self.speedup, self.velMax)
 
 
         self.pos = posNew
