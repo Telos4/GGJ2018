@@ -189,9 +189,12 @@ class LineObject(Object):
         self.renderer.line(self.pos,[self.pos[0],self.pos[1]+self.renderer.barsize])
 
 class LineEffect(Object):
-    def __init__(self, pos, renderer, pos2):
+    def __init__(self, pos, pos2, renderer):
         Object.__init__(self, pos=pos, renderer=renderer)
         self.pos2 = pos2
+        self.counter = 0
+        self.counter_max = 5
 
     def draw(self):
+        self.counter += 1
         self.renderer.line(self.pos,self.pos2)

@@ -32,6 +32,8 @@ class Game:
 
         for effect in self.effects:
             effect.draw()
+            if effect.counter > effect.counter_max:
+                self.effects.remove(effect)
         #self.renderer.update()
 
 
@@ -112,16 +114,22 @@ class Pong(Game):
                     soundcoll = pygame.mixer.Sound("collision.wav")
                     pygame.mixer.Channel(2).play(soundcoll, loops=0, maxtime=0, fade_ms=0)
 
-                    # play collision effect
-                    #effect = LineEffect(self.players[player].pos + np.array([0,100]), self.renderer)
-                    #self.effects.append(effect)
-                    #self.renderer.line(self.players[player].pos, self.players[player].pos + np.array([0, 100]))
-                    #effect_line.draw()
+
 
 
                     self.ball.movedir = self.dirAfterCollisionPlayer(player,y0)
                     self.ball.pos = np.array([player*self.renderer.windowwidth,y0])
                     self.ball.vel = min(self.ball.vel * self.ball.speedup, self.ball.velMax)
+
+                    # play collision effect
+                    ball_pos = self.ball.pos
+                    if player == 1:
+                        ball_op_pos = self.ball.pos + 500 * self.ball.movedir
+                    else:
+                        ball_op_pos = self.ball.pos + 500 * self.ball.movedir
+
+                    effect = LineEffect(ball_pos, ball_op_pos, self.renderer)
+                    self.effects.append(effect)
                 else:
                     self.afterScore(player)
 
@@ -151,6 +159,7 @@ class Pong(Game):
 
 
     def update(self):
+
         self.doGameStep()
         self.render()
         for obst in self.obstacleList:
