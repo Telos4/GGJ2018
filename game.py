@@ -134,6 +134,8 @@ class Pong(Game):
     def afterScore(self,winner):
         global obstaclebool
         self.score[winner] += 1
+        score_sound = pygame.mixer.Sound("score.wav")
+        pygame.mixer.Channel(5).play(score_sound)
         ww = self.renderer.windowwidth
         start = np.array([np.random.randint(ww/3,ww*2./3.),np.random.randint(ww/3,2*ww/3.)])
         dir = np.array([random(),random()])
