@@ -158,7 +158,14 @@ class Pong(Game):
                 self.text_renderer.WORD("GAMEOVER", 3)
                 self.ball.vel = 0
                 self.renderer.update()
-                time.sleep(10)
+                t_end = time.time()+5
+                breakbool = False
+                while time.time()<t_end:
+                    for event in pygame.event.get():
+                        if event.type == KEYUP:
+                           breakbool = True
+                    if breakbool:
+                        break
                 pygame.mixer.Channel(3).fadeout(2000)
                 time.sleep(2)
 
@@ -166,7 +173,13 @@ class Pong(Game):
                 self.renderer.clearscreen()
                 self.imag_renderer.WORD("ir",1)
                 self.renderer.update()
-                time.sleep(5)
+                t_end = time.time()+5
+                while time.time()<t_end:
+                    for event in pygame.event.get():
+                        if event.type == KEYUP:
+                           breakbool = True
+                    if breakbool:
+                        break
 
 
                 #credit screen
@@ -184,7 +197,27 @@ class Pong(Game):
                 self.credits_renderer.WORD("SOFIE K",6)
                 self.credits_renderer.WORD("STEPHAN M",7)
                 self.renderer.update()
-                time.sleep(5)
+                t_end = time.time()+5
+                breakbool = False
+                while time.time()<t_end:
+                    for event in pygame.event.get():
+                        if event.type == KEYUP:
+                           breakbool = True
+                    if breakbool:
+                        break
+                
+                #imaginaerraum screen
+                self.renderer.clearscreen()
+                self.imag_renderer.WORD("ir",1)
+                self.renderer.update()
+                breakbool = False
+                while True:
+                    for event in pygame.event.get():
+                        if event.type == KEYUP:
+                           breakbool = True
+                    if breakbool:
+                        break
+                    time.sleep(2/60)
 
 
                 return False
