@@ -20,13 +20,14 @@ class OBSTACLE(Object):
         Object.__init__(self,None,renderer)
         self.start = start
         self.end = end
-        self.vel = 0.0
+
         self.movedir = np.array([0.0, 0.0])
-        self.velMax = 25
+        self.velMax = 30
+        self.vel = 0
 
     def move(self):
-        self.start = self.start + self.movedir
-        self.end = self.end + self.movedir
+        self.start = self.start + self.movedir * self.vel
+        self.end = self.end + self.movedir * self.vel
 
         if min(self.start[1], self.end[1]) < 0:
             self.movedir[1] = -self.movedir[1]
@@ -108,8 +109,9 @@ class BALL(Object):
             cross = np.array([x, y])
 
             # push obstacle out of the way
-            obst.vel = min(obst.vel + self.vel, obst.velMax)
-            obst.movedir = self.movedir/np.linalg.norm(self.movedir)
+            obst.vel = min(obst.vel + 0.1* self.vel, obst.velMax)
+            obst.movedir += self.movedir
+            obst.movedir/=np.linalg.norm(obst.movedir)
 
             #print("collission\n")
 
