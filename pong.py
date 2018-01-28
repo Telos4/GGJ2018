@@ -17,7 +17,6 @@ if __name__ == "__main__":
 
     obstaclebool = True
     oszi = False
-    background_sound_bool = True
     ser = None
     try:
         oszi_params = open('oszi_params.txt', 'r')
@@ -41,16 +40,17 @@ if __name__ == "__main__":
     ponggame = Pong(renderer,obstaclebool)
     pass
 
-    splashscreen = False
+    splashscreen = True
     gamerunning = True
-    modscreen = False
+    modscreen = True
+    backsoundbool = True
 
     while gamerunning:
         t_end = time.time() + 1
         if splashscreen == True:
             renderer.clearscreen()
             sound = pygame.mixer.Sound("GGJ18.wav")
-            sound.play()
+            pygame.mixer.Channel(3).play(sound, loops = -1)
             while time.time()<t_end:
                 value = []
                 for t in range(0,500):
@@ -105,6 +105,8 @@ if __name__ == "__main__":
             ponggame = Pong(renderer,obstaclebool)
             pass
 
+            pygame.mixer.Channel(3).fadeout(3000)
+
             renderer.clearscreen()
             ponggame.text_renderer.WORD("3",3)
             renderer.update()
@@ -119,10 +121,10 @@ if __name__ == "__main__":
             time.sleep(1)
             splashscreen = False
 
-        if background_sound_bool:
-            background_sound = pygame.mixer.Sound("background.wav")
-            pygame.mixer.Channel(1).play(background_sound, loops = -1)
-            background_sound_bool = False
+            if backsoundbool:
+                backsoundbool = False
+                background_sound = pygame.mixer.Sound("background.wav")
+                pygame.mixer.Channel(1).play(background_sound, loops = -1)
 
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
