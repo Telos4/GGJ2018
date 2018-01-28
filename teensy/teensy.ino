@@ -34,6 +34,7 @@ void loop() {
   // smallsquare();
   serialline();
   // faecher();
+  // A();
   // bigsquare();
   // square(50,50,2000,3000);
   // smallsquare();
@@ -42,10 +43,26 @@ void loop() {
   
 }
 
+void A(){
+mylineto(1,1300,900);
+// mylineto(0,1300,900);
+mylineto(0,1300,1300);
+mylineto(0,1300,1100);
+mylineto(0,1500,1100);
+mylineto(0,1300,900);
+mylineto(0,1500,900);
+mylineto(0,1500,900);
+mylineto(0,1500,1300);
+}
+
 void faecher(){
-  for(int i = 0; i< 4095; i+=2){
+
+//  mylineto(1, 4094/2, 4094/2);
+//  mylineto(0, 3500, 4094/2-100);
+
+  for(int i = 0; i< 4095; i+=1){
     mylineto(1, 4094/2, 4094/2);
-    mylineto(0, 3500, i);
+    mylineto(0, 1500, i);
   }
 }
 
@@ -122,8 +139,9 @@ return;
 short x1 = currentpos.x;
 short y1 = currentpos.y;
 
-/*
 const int steplen = 10;
+
+// Serial.println(String(x1)+" " +String(y1)+" " +String(x2)+" " +String(y2));
 
 if(x1==x2){ // vertikale
   if(y1<y2){
@@ -139,26 +157,38 @@ else if(y1==y2){ // horizontal
     do{ dac2(x1,y1);x1-=steplen;}while(x1>x2);
   }
 }
-
 else {
     const bool right = x1<x2;
     int dx =  abs(x2-x1), sx = x1<x2 ? steplen : -steplen;
     int dy = -abs(y2-y1), sy = y1<y2 ? steplen : -steplen;
     int err = dx+dy, e2; // error value e_xy
     int sdy = dy*steplen, sdx = dx*steplen;
-        
+    const bool steep=-dy > dx; // y ist langsam
+
+   dac2(x1,y1);
+
     while(1){
-      dac2(x1,y1);
       if( (right && x1>x2) || (!right && x1<x2)) break;
       e2 = 2*err;
-      if (e2 > sdy) { err += sdy; x1 += sx; } // e_xy+e_x > 0
-      if (e2 < sdx) { err += sdx; y1 += sy; } // e_xy+e_y < 0
+      if (!steep) {
+        err += sdy; x1 += sx;
+        if (e2 < sdx) { err += sdx; y1 += sy; }
+      }
+      else {
+        err += sdx; y1 += sy;
+        if (e2 > sdy)  { err += sdy; x1 += sx; }
+        }
+      //if ((e2 > sdy) || (!steep)) { err += sdy; x1 += sx; } // e_xy+e_x > 0
+      //if ((e2 < sdx) ||   steep ) { err += sdx; y1 += sy; } // e_xy+e_y < 0
+      dac2(x1,y1);
+
     }
 }
 
-dac2(x2,y2);
+currentpos.x=x2;
+currentpos.y=y2;
 
-*/
+// dac2(x2,y2);
 
 #if 0
   int dx =  abs(x2-x1), sx = x1<x2 ? steplen2 : -steplen2;
@@ -175,7 +205,7 @@ dac2(x2,y2);
 #endif
 
 
-
+/*
 
 
 // Serial.println("cur  " + String(x1)+" "+String(y1));
@@ -185,7 +215,7 @@ dac2(x2,y2);
 const int len = abs(x2-x1)+abs(y2-y1);
 // const int len = sqrt(sq(x2-x1)+sq(y2-y1));
 // Serial.println(len);
-const int steplen = 10;
+// const int steplen = 10;
 // Serial.print('_');
 const int shift=10;
 const int stepx = ((((int)(x2-x1))*steplen)<<shift)/len;
@@ -221,7 +251,7 @@ y1=((y1<<shift)+stepy)>>shift;
 
 currentpos.x=x2;
 currentpos.y=y2;
-
+*/
 }
 
 void mylineto(int b, int x, int y) {
@@ -234,10 +264,10 @@ lineto(line);
 
 
 void dac2(const unsigned short val0, const unsigned short val1) {
-  // digitalWrite(dacldacpin, HIGH);
+  digitalWrite(dacldacpin, HIGH);
   dacsingle(val0, 0);
   dacsingle(val1, 1);
-  // digitalWrite(dacldacpin, LOW);
+  digitalWrite(dacldacpin, LOW);
 }
 
 void dacsingle(const unsigned short val, const bool chan) {
