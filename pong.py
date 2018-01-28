@@ -15,7 +15,7 @@ rightDown = K_j
 
 if __name__ == "__main__":
 
-    obstaclebool = False
+    obstaclebool = True
     oszi = False
     ser = None
     try:
@@ -131,11 +131,11 @@ if __name__ == "__main__":
                 ponggame.terminate()
             if event.type == KEYDOWN:
                 for p in ponggame.players:
-                    if event.key in p.controls:
+                    if event.key in p.controls[0] or event.key in p.controls[1]:
                         p.changeVel(1, event.key)
             if event.type == KEYUP:
                 for p in ponggame.players:
-                    if event.key in p.controls:
+                    if event.key in p.controls[0] or event.key in p.controls[1]:
                         p.changeVel(-1, event.key)
 
         gamerunning = ponggame.update()

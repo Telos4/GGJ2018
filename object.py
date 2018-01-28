@@ -22,6 +22,7 @@ class OBSTACLE(Object):
         self.end = end
         self.vel = 0.0
         self.movedir = np.array([0.0, 0.0])
+        self.velMax = 25
 
     def move(self):
         self.start = self.start + self.movedir
@@ -94,32 +95,34 @@ class BALL(Object):
                         min_distance = current_distance
                         min_collision_object = obst
 
-            # if a collision occurred handle it
-            if not (min_collision_object == None):
-                obst = min_collision_object
-                x0 = obst.start[0]
-                y0 = obst.start[1]
-                x1 = obst.end[0]
-                y1 = obst.end[1]
-                mo = (y1 - y0) / (x1 - x0)
-                x = (y0 - v0 + mb * u0 - mo * x0) / (mb - mo)
-                y = y0 + mo * (x - x0)
-                cross = np.array([x, y])
+        # if a collision occurred handle it
+        if not (min_collision_object == None):
+            obst = min_collision_object
+            x0 = obst.start[0]
+            y0 = obst.start[1]
+            x1 = obst.end[0]
+            y1 = obst.end[1]
+            mo = (y1 - y0) / (x1 - x0)
+            x = (y0 - v0 + mb * u0 - mo * x0) / (mb - mo)
+            y = y0 + mo * (x - x0)
+            cross = np.array([x, y])
 
-                # push obstacle out of the way
-                obst.vel += self.vel
-                obst.movedir = self.movedir
+            # push obstacle out of the way
+            obst.vel = min(obst.vel + self.vel, obst.velMax)
+            obst.movedir = self.movedir/np.linalg.norm(self.movedir)
 
-                a = posNew-cross
-                b = np.array([x1-x0,y1-y0])
-                b = b/np.linalg.norm(b)
-                X = np.dot(a,b)*b
-                posMirror = 2*cross+2*X-posNew
-                posNew = posMirror
-                self.movedir = posMirror-cross
+            #print("collission\n")
 
-                # collision with obstacle speedup and enforcing of maximum velocity
-                self.vel = min(self.vel * self.speedup, self.velMax)
+            a = posNew-cross
+            b = np.array([x1-x0,y1-y0])
+            b = b/np.linalg.norm(b)
+            X = np.dot(a,b)*b
+            posMirror = 2*cross+2*X-posNew
+            posNew = posMirror
+            self.movedir = posMirror-cross
+
+            # collision with obstacle speedup and enforcing of maximum velocity
+            self.vel = min(self.vel * self.speedup, self.velMax)
 
 
         self.pos = posNew

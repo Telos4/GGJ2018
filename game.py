@@ -23,12 +23,11 @@ class Game:
             object.draw()
         self.renderer.update()
 
-leftUp = K_w
-leftDown = K_s
-rightUp = K_UP
-rightDown = K_DOWN
 
-
+leftUps = [K_w, K_d]
+leftDowns = [K_s, K_f]
+rightUps = [K_UP, K_k]
+rightDowns = [K_DOWN, K_j]
 
 # player class for handling player input
 class PLAYER:
@@ -41,16 +40,16 @@ class PLAYER:
         self.vel = 100
         if left:
             self.pos = playerLeftPos
-            self.controls = [leftUp,leftDown]
+            self.controls = [leftUps,leftDowns]
         else:
             self.pos = playerRightPos
-            self.controls = [rightUp,rightDown]
+            self.controls = [rightUps,rightDowns]
         self.player_object = LineObject(self.pos, self.renderer)
 
     def changeVel(self,dir,key):
-        if key == self.controls[0]: #accelerate up
+        if key in self.controls[0]: #accelerate up
             self.movedir -= 1*dir
-        if key == self.controls[1]: #accelerate down
+        if key in self.controls[1]: #accelerate down
             self.movedir += 1*dir
     def move(self):
         self.pos[1] += self.movedir*self.vel
