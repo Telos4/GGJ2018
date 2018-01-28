@@ -105,11 +105,11 @@ class Pong(Game):
                     self.afterScore(player)
 
     def dirAfterCollisionPlayer(self,player,y0):
-                #y0 = self.ball.pos[1]-(self.ball.pos[0]-player*self.renderer.windowwidth)*self.ball.movedir[1]/self.ball.movedir[0]
-                middle = self.players[player].pos[1]+self.renderer.barsize/2
-                nDFM  = (y0-middle)/self.renderer.barsize #normed distance from middle
-                reflected_direction = np.array([(1-2*player)*np.cos(np.pi*nDFM),np.sin(np.pi*nDFM)])
-                return reflected_direction
+        #y0 = self.ball.pos[1]-(self.ball.pos[0]-player*self.renderer.windowwidth)*self.ball.movedir[1]/self.ball.movedir[0]
+        middle = self.players[player].pos[1]+self.renderer.barsize/2
+        nDFM  = (y0-middle)/self.renderer.barsize #normed distance from middle
+        reflected_direction = np.array([(1-2*player)*np.cos(0.9*np.pi*nDFM),np.sin(0.9*np.pi*nDFM)])
+        return reflected_direction
 
     def afterScore(self,winner):
         global obstaclebool
@@ -134,7 +134,7 @@ class Pong(Game):
             obst.draw()
 
         for i in self.score:
-            if i == 1:
+            if i == 4:
                 self.renderer.clearscreen()
                 self.text_renderer.WORD("GAMEOVER", 3)
                 self.ball.vel = 0
