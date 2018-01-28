@@ -7,6 +7,11 @@ import time
 
 class Game:
     def __init__(self, renderer):
+        # init pygame
+        pygame.mixer.pre_init()
+        pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
+        pygame.init()
+
         # List of all displayed objects
         self.objects = []
         self.players = []
@@ -23,7 +28,7 @@ class Game:
 
         for object in self.objects:
             object.draw()
-        self.renderer.update()
+        #self.renderer.update()
 
 
 leftUps = [K_w, K_d]
@@ -98,8 +103,14 @@ class Pong(Game):
                 y0 = self.ball.pos[1]-(self.ball.pos[0]-player*self.renderer.windowwidth)*self.ball.movedir[1]/self.ball.movedir[0]
                 ypl = self.players[player].pos[1]
                 if  ypl < y0 < ypl+self.renderer.barsize:
+                    # play collision sound
                     soundcoll = pygame.mixer.Sound("collision.wav")
-                    pygame.mixer.Channel(2).play(soundcoll)
+                    pygame.mixer.Channel(2).play(soundcoll, loops=0, maxtime=0, fade_ms=0)
+
+                    # play collision effect
+
+
+
                     self.ball.movedir = self.dirAfterCollisionPlayer(player,y0)
                     self.ball.pos = np.array([player*self.renderer.windowwidth,y0])
                     self.ball.vel = min(self.ball.vel * self.ball.speedup, self.ball.velMax)
