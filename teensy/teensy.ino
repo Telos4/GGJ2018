@@ -16,10 +16,8 @@ struct {unsigned short x=0,y=0;} currentpos;
 struct {
   unsigned int lines[NUMLINES];
   unsigned int linecount = 0;
-} frame[2];
-bool activeframe = 0;
-
-unsigned int lastframe=0;
+  unsigned int nextline = 0;
+} frame,tempframe;
 
 
 void setup() {
@@ -29,7 +27,7 @@ void setup() {
   digitalWrite(dacldacpin, LOW);
   SPI.begin();
   // Serial.begin(9600);
-  Serial.begin(115200);
+  Serial.begin(4000000);
   // while (!Serial) {}
 }
 
@@ -102,39 +100,56 @@ void smallsquare(){
 
 
 void drawframe(){
-  unsigned int thisframe=millis();
-  if(thisframe-lastframe >= 20){
-    lastframe=thisframe;
-    // mylineto(1,0,0); // tragendes Poster
-    for (unsigned int i = 0; i < frame[activeframe].linecount; i++) {
-      lineto(frame[activeframe].lines[i]);
+  if(frame.nextline < frame.linecount){
+    lineto(frame.lines[frame.nextline]);
+    if(++frame.nextline >= frame.linecount){
+      frame.nextline=0;
+      mylineto(1,0,0);
     }
-    mylineto(1,0,0);
   }
 }
 
-void clearscreen(){
-  frame[activeframe].linecount = 0;
-  activeframe ^= 1;
-  currentpos.x=0;
-  currentpos.y=0;
-  dac2(0, 0); // Zeiger auf Oszi nach unten links bewegen
+void myupdate(){
+  tempframe.nextline=0;
+  while(frame.linecount<NUMLINES && tempframe.nextline < tempframe.linecount){
+    frame.lines[frame.linecount++] = tempframe.lines[tempframe.nextline++];
+  }
+  tempframe.linecount = 0;
 }
 
-void serialline() {
-  drawframe();
-  
+void clearscreen(){
+  frame.linecount = 0;
+  frame.nextline=0;
+  tempframe.linecount = 0;
+  tempframe.nextline=0;
+  mylineto(1,0,0);
+}
+
+void addline(const unsigned int t){
+  if (tempframe.linecount < NUMLINES-1) {
+      tempframe.lines[tempframe.linecount++] = t;
+    }
+}
+
+void receiveserial(){
   if (Serial.available() >= 4) {
     unsigned int t;
     Serial.readBytes((char*)(&t),4);
     if (t&(1<<31)) {
+      myupdate();
+      return;
+    }
+    if (t&(1<<29)) {
       clearscreen();
       return;
     }
-    if (frame[!activeframe].linecount < NUMLINES-1) {
-      frame[!activeframe].lines[frame[!activeframe].linecount++] = t;
-    }
+    addline(t);
   }
+}
+
+void serialline() {
+  drawframe();
+  receiveserial();
 }
 
 void lineto(const uint32_t line) {

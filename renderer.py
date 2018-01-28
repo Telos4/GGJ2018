@@ -20,7 +20,7 @@ class Renderer():
         pygame.init()
         self.displaysurf = pygame.display.set_mode((self.windowwidth // self.scalingfactor, self.windowheight // self.scalingfactor))
 
-    def lineto(self, end_pos, draw=True):
+    def _lineto(self, end_pos, draw=True):
         ex = int(abs(end_pos[0]))
         ey = int(abs(end_pos[1]))
         if ex < 0 or ex >=2**12:
@@ -34,6 +34,12 @@ class Renderer():
             if not draw:
                 t+=1<<30
             self.serial.write(t.to_bytes(4,'little'))
+
+    def lineto(self, end_pos, draw=True):
+        self._lineto(end_pos, draw)
+        if draw:
+            pygame.draw.line(self.displaysurf,self.linecolor,np.array(self.lastpos)/self.scalingfactor,np.array(end_pos)/self.scalingfactor)
+        self.lastpos=end_pos
 
     def line(self, start_pos,end_pos):
         if self.lastpos[0] == start_pos[0] and self.lastpos[1] == start_pos[1]:
@@ -54,10 +60,15 @@ class Renderer():
         self.line(downRight,[downRight[0],upLeft[1]])
         self.line([downRight[0],upLeft[1]],upLeft)
 
+    def update(self):
+        if self.oszi:
+            self.serial.write((1<<31).to_bytes(4,'little'))
+        pygame.display.update()
+
     def clearscreen(self):
         self.lastpos=(0,0)
         if self.oszi:
-            self.serial.write((1<<31).to_bytes(4,'little'))
+            self.serial.write((1<<29).to_bytes(4,'little'))
         self.displaysurf.fill(self.bgcolor)
 
 

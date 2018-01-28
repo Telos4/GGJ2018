@@ -28,7 +28,7 @@ if __name__ == "__main__":
             if line[0] != "#":
                 try:
                     serial_port = line.rstrip()
-                    ser = serial.Serial(serial_port, 115200, timeout=10)
+                    ser = serial.Serial(serial_port, 4000000, timeout=10)
                     oszi = True
                     break
                 except:
@@ -64,7 +64,7 @@ if __name__ == "__main__":
                         renderer.lineto(value[n],True)
                     #renderer.lineto([0, 0], False)
                     value = []
-                    pygame.display.update()
+                    renderer.update()
                     time.sleep(2.0/60.0)
                
             #time.sleep(5)
@@ -76,7 +76,7 @@ if __name__ == "__main__":
             ponggame.text_renderer.WORD("UP D  DOWN F",2)
             ponggame.text_renderer.WORD("PLAYER 2",4)
             ponggame.text_renderer.WORD("UP J  DOWN K",5)
-            pygame.display.update()
+            renderer.update()
             time.sleep(5)
 
             #Modscreen
@@ -89,7 +89,7 @@ if __name__ == "__main__":
             while modscreen == True:
 
                 #ponggame.text_renderer.WORD("OBSTACLES SQUARES   3",4)
-                pygame.display.update()
+                renderer.update()
                 #event = pygame.event.wait()
                 for event in pygame.event.get():
                     if event.type == KEYUP and event.key == K_1:
@@ -106,15 +106,15 @@ if __name__ == "__main__":
 
             renderer.clearscreen()
             ponggame.text_renderer.WORD("3",3)
-            pygame.display.update()
+            renderer.update()
             time.sleep(1)
             renderer.clearscreen()
             ponggame.text_renderer.WORD("2",3)
-            pygame.display.update()
+            renderer.update()
             time.sleep(1)
             renderer.clearscreen()
             ponggame.text_renderer.WORD("1",3)
-            pygame.display.update()
+            renderer.update()
             time.sleep(1)
             splashscreen = False
 

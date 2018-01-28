@@ -21,6 +21,7 @@ class Game:
 
         for object in self.objects:
             object.draw()
+        self.renderer.update()
 
 leftUp = K_d
 leftDown = K_f
@@ -123,7 +124,7 @@ class Pong(Game):
             self.obstacleList.append(OBSTACLE(self.renderer,start,end))
         self.ball.reset([-1+2*winner, random()])
         self.drawscore()
-        pygame.display.update()
+        self.renderer.update()
         time.sleep(3)
 
 
@@ -138,11 +139,11 @@ class Pong(Game):
                 self.renderer.clearscreen()
                 self.text_renderer.WORD("GAMEOVER", 3)
                 self.ball.vel = 0
-                pygame.display.update()
+                self.renderer.update()
                 time.sleep(5)
                 return False
 
-        pygame.display.update()
+        self.renderer.update()
         return True
 
     def drawscore(self):
