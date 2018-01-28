@@ -98,7 +98,7 @@ class Pong(Game):
                 ypl = self.players[player].pos[1]
                 if  ypl < y0 < ypl+self.renderer.barsize:
                     soundcoll = pygame.mixer.Sound("collision.wav")
-                    soundcoll.play()
+                    pygame.mixer.Channel(2).play(soundcoll)
                     self.ball.movedir = self.dirAfterCollisionPlayer(player,y0)
                     self.ball.pos = np.array([player*self.renderer.windowwidth,y0])
                     self.ball.vel = min(self.ball.vel * self.ball.speedup, self.ball.velMax)
