@@ -31,8 +31,8 @@ class Renderer():
             ey=0
         if self.oszi:
             t=(ex<<16)+ey
-            if not draw:
-                t+=1<<30
+            if draw:
+                t+=1<<12
             self.serial.write(t.to_bytes(4,'little'))
 
     def lineto(self, end_pos, draw=True):

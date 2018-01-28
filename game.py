@@ -23,10 +23,10 @@ class Game:
             object.draw()
         self.renderer.update()
 
-leftUp = K_d
-leftDown = K_f
-rightUp = K_k
-rightDown = K_j
+leftUp = K_w
+leftDown = K_s
+rightUp = K_UP
+rightDown = K_DOWN
 
 
 

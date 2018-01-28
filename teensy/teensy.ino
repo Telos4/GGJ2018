@@ -17,7 +17,7 @@ struct {
   unsigned int lines[NUMLINES];
   unsigned int linecount = 0;
   unsigned int nextline = 0;
-} frame,tempframe;
+} frame,inactiveframe;
 
 
 void setup() {
@@ -27,7 +27,7 @@ void setup() {
   digitalWrite(dacldacpin, LOW);
   SPI.begin();
   // Serial.begin(9600);
-  Serial.begin(4000000);
+  Serial.begin(115200);
   // while (!Serial) {}
 }
 
@@ -93,7 +93,7 @@ void smallsquare(){
 //short line2y(const unsigned int line){
 //return line & 0xFFF; // just to be sure
 //}
-#define LINE_TO_B(line)  (((line) >> 30) & 0x1)
+#define LINE_TO_B(line)  (((line) >> 12) & 0x1)
 //bool line2b(const unsigned int line){
 //return (line >> 30) & 0x1;
 //}
@@ -101,33 +101,37 @@ void smallsquare(){
 
 void drawframe(){
   if(frame.nextline < frame.linecount){
-    lineto(frame.lines[frame.nextline]);
+//    if(frame.nextline==0)
+//      lineto(frame.lines[frame.nextline] & ~ (1<<12));
+//    else
+      lineto(frame.lines[frame.nextline]);
     if(++frame.nextline >= frame.linecount){
       frame.nextline=0;
-      mylineto(1,0,0);
+      // mylineto(1,0,0);
     }
   }
 }
 
 void myupdate(){
-  tempframe.nextline=0;
-  while(frame.linecount<NUMLINES && tempframe.nextline < tempframe.linecount){
-    frame.lines[frame.linecount++] = tempframe.lines[tempframe.nextline++];
+  while(frame.nextline != 0){
+    drawframe();
   }
-  tempframe.linecount = 0;
+  for(unsigned int i=0;i<inactiveframe.linecount; i++)
+    frame.lines[i] = inactiveframe.lines[i];
+  frame.linecount = inactiveframe.linecount;
+  frame.nextline=0;
+  // mylineto(1,0,0);
 }
 
 void clearscreen(){
-  frame.linecount = 0;
-  frame.nextline=0;
-  tempframe.linecount = 0;
-  tempframe.nextline=0;
-  mylineto(1,0,0);
+  inactiveframe.linecount = 0;
+  inactiveframe.nextline=0;
+  // mylineto(1,0,0);
 }
 
 void addline(const unsigned int t){
-  if (tempframe.linecount < NUMLINES-1) {
-      tempframe.lines[tempframe.linecount++] = t;
+  if (inactiveframe.linecount < NUMLINES-1) {
+      inactiveframe.lines[inactiveframe.linecount++] = t;
     }
 }
 
@@ -158,10 +162,10 @@ const short x2 = LINE_TO_X(line);
 const short y2 = LINE_TO_Y(line);
 const bool b = LINE_TO_B(line);
 
-if(b){ // 1 = moveto
+if(!b){ // 0 = moveto
 currentpos.x=x2;
 currentpos.y=y2;
-dac2(x2,y2);
+dac2(x2,y2); // notwendig ?
 return;
 }
 
@@ -286,7 +290,7 @@ currentpos.y=y2;
 void mylineto(int b, int x, int y) {
 unsigned int line = y;
 line |= x<<16;
-line |= b<<30;
+line |= b<<12;
 lineto(line);
 }
 
