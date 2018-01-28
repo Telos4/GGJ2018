@@ -40,7 +40,7 @@ if __name__ == "__main__":
     ponggame = Pong(renderer,obstaclebool)
     pass
 
-    splashscreen = False
+    splashscreen = True
     gamerunning = True
     modscreen = True
     backsoundbool = True
@@ -50,35 +50,47 @@ if __name__ == "__main__":
         if splashscreen == True:
             renderer.clearscreen()
             sound = pygame.mixer.Sound("GGJ18.wav")
-            pygame.mixer.Channel(3).play(sound, loops = -1)
-            while time.time()<t_end:
+            pygame.mixer.Channel(3).play(sound)
+            value = []
+            for t in range(0,200):
+                renderer.clearscreen()
+                ponggame.text_renderer.WORD("GLOBALGAMEJAM",2)
+                ponggame.text_renderer.WORD("2018",3)
+                discretization = 50
+                for n in range(0,discretization):
+                    value.append([n*renderer.windowwidth/discretization,int(math.sin(n*0.75+0.5*t)*500*math.sin(0.1*n-0.1*t))+3000])
+                renderer.lineto(value[0], False)
+                for n in range(1,discretization):
+                    renderer.lineto(value[n],True)
+                #renderer.lineto([0, 0], False)
                 value = []
-                for t in range(0,200):
-                    renderer.clearscreen()
-                    ponggame.text_renderer.WORD("GLOBALGAMEJAM",2)
-                    ponggame.text_renderer.WORD("2018",3)
-                    discretization = 50
-                    for n in range(0,discretization):
-                        value.append([n*renderer.windowwidth/discretization,int(math.sin(n*0.75+0.5*t)*500*math.sin(0.1*n-0.1*t))+3000])
-                    renderer.lineto(value[0], False)
-                    for n in range(1,discretization):
-                        renderer.lineto(value[n],True)
-                    #renderer.lineto([0, 0], False)
-                    value = []
-                    renderer.update()
-                    time.sleep(2.0/60.0)
-            #time.sleep(5)
+                renderer.update()
+                breakbool = False
+                for event in pygame.event.get():
+                    if event.type == KEYUP:
+                       breakbool = True
+                if breakbool:
+                    break
+                time.sleep(2.0/60.0)
+            
 
 
-            #Hilfsscreen
+            #Hilfsscree
             renderer.clearscreen()
             ponggame.text_renderer.WORD("PLAYER 1",1)
             ponggame.text_renderer.WORD("UP D  DOWN F",2)
             ponggame.text_renderer.WORD("PLAYER 2",4)
             ponggame.text_renderer.WORD("UP K  DOWN J",5)
             renderer.update()
-            time.sleep(5)
-
+            breakbool = False
+            t_end = time.time()+5
+            while time.time()<t_end:
+                for event in pygame.event.get():
+                    if event.type == KEYUP:
+                       breakbool = True
+                if breakbool:
+                    break
+        
             #Modscreen
             pygame.event.clear()
             renderer.clearscreen()
