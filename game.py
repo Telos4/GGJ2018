@@ -166,7 +166,8 @@ class Pong(Game):
             obst.draw()
 
         for i in self.score:
-            if i == 2:
+            if i == 3:
+                pygame.event.clear()
                 self.renderer.clearscreen()
                 pygame.mixer.Channel(1).fadeout(500)
                 gameoversound = pygame.mixer.Sound("gameover.wav")
@@ -174,7 +175,7 @@ class Pong(Game):
                 self.text_renderer.WORD("GAMEOVER", 3)
                 self.ball.vel = 0
                 self.renderer.update()
-                t_end = time.time()+5
+                t_end = time.time()+10
                 breakbool = False
                 while time.time()<t_end:
                     for event in pygame.event.get():
