@@ -7,6 +7,11 @@ import time
 
 class Game:
     def __init__(self, renderer):
+        # init pygame
+        pygame.mixer.pre_init()
+        pygame.mixer.init(frequency=22050, size=-16, channels=2, buffer=512)
+        pygame.init()
+
         # List of all displayed objects
         self.objects = []
         self.players = []
@@ -98,7 +103,7 @@ class Pong(Game):
                 if  ypl < y0 < ypl+self.renderer.barsize:
                     # play collision sound
                     soundcoll = pygame.mixer.Sound("collision.wav")
-                    pygame.mixer.Channel(2).play(soundcoll)
+                    pygame.mixer.Channel(2).play(soundcoll, loops=0, maxtime=0, fade_ms=0)
 
                     # play collision effect
 

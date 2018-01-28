@@ -113,7 +113,7 @@ class BALL(Object):
             cross = np.array([x, y])
 
             # push obstacle out of the way
-            obst.vel = min(obst.vel + 0.1* self.vel, obst.velMax)
+            obst.vel = min(obst.vel + 0.05 * self.vel, obst.velMax)
             obst.movedir += self.movedir
             obst.movedir/=np.linalg.norm(obst.movedir)
 

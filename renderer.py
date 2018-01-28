@@ -42,16 +42,19 @@ class Renderer():
         self.lastpos=end_pos
 
     def line(self, start_pos,end_pos):
-        if self.lastpos[0] == start_pos[0] and self.lastpos[1] == start_pos[1]:
-            self.lineto(end_pos)
-            self.lastpos=end_pos
-        elif self.lastpos[0] == end_pos[0] and self.lastpos[1] == end_pos[1]:
-            self.lineto(start_pos)
-            self.lastpos=start_pos
-        else:
-            self.lineto(start_pos,False)
-            self.lineto(end_pos)
-            self.lastpos=end_pos
+        # if self.lastpos[0] == start_pos[0] and self.lastpos[1] == start_pos[1]:
+        #     self.lineto(end_pos)
+        #     self.lastpos=end_pos
+        # elif self.lastpos[0] == end_pos[0] and self.lastpos[1] == end_pos[1]:
+        #     self.lineto(start_pos)
+        #     self.lastpos=start_pos
+        # else:
+        #   self.lineto(start_pos, False)
+        #   self.lineto(end_pos)
+        #   self.lastpos = end_pos
+        self.lineto(start_pos, False)
+        self.lineto(end_pos)
+        self.lastpos = end_pos
         pygame.draw.line(self.displaysurf,self.linecolor,np.array(start_pos)/self.scalingfactor,np.array(end_pos)/self.scalingfactor)
 
     def rectangle(self, upLeft,downRight):
