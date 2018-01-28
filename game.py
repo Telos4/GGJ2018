@@ -12,7 +12,9 @@ class Game:
         self.players = []
 
         self.renderer = renderer
-        self.text_renderer = letters.TEXT(renderer)
+        self.text_renderer = letters.TEXT(renderer,[200,50])
+        self.credits_renderer = letters.TEXT(renderer,[120,50])
+        self.imag_renderer = letters.TEXT(renderer,[1000,150])
 
         self.score = [0,0]
 
@@ -145,6 +147,26 @@ class Pong(Game):
                 time.sleep(10)
                 pygame.mixer.Channel(3).fadeout(2000)
                 time.sleep(2)
+
+                #imaginaerraum screen
+                self.renderer.clearscreen()
+                self.imag_renderer.WORD("ir",1)
+                self.renderer.update()
+                time.sleep(5)
+
+
+                #credit screen
+                self.renderer.clearscreen()
+                self.credits_renderer.WORD("NICO STUHLMUELLER",2)
+                self.credits_renderer.WORD("SIMON PIRKELMANN",3)
+                self.credits_renderer.WORD("CLEMENS BUCHACHER",4)
+                self.credits_renderer.WORD("DANIEL HEINLEIN",5)
+                self.credits_renderer.WORD("SOFIE KRIETENSTEIN",6)
+                self.credits_renderer.WORD("STEPHAN MESSLINGER",7)
+                self.renderer.update()
+                time.sleep(5)
+
+
                 return False
 
         self.renderer.update()
