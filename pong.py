@@ -40,7 +40,7 @@ if __name__ == "__main__":
     ponggame = Pong(renderer,obstaclebool)
     pass
 
-    splashscreen = True
+    splashscreen = False
     gamerunning = True
     modscreen = True
     backsoundbool = True
@@ -67,7 +67,6 @@ if __name__ == "__main__":
                     value = []
                     renderer.update()
                     time.sleep(2.0/60.0)
-               
             #time.sleep(5)
 
 

@@ -101,10 +101,11 @@ class Pong(Game):
                 if self.ball.pos[0] < 0:
                     behind = True
             if player == 1:
-                if self.ball.pos[0] > self.renderer.windowwidth:
+                if self.ball.pos[0] >= self.renderer.windowwidth:
                     behind = True
             if behind:
                 y0 = self.ball.pos[1]-(self.ball.pos[0]-player*self.renderer.windowwidth)*self.ball.movedir[1]/self.ball.movedir[0]
+                print(y0)
                 ypl = self.players[player].pos[1]
                 if  ypl < y0 < ypl+self.renderer.barsize:
                     # play collision sounds
