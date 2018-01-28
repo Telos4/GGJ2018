@@ -76,6 +76,7 @@ if __name__ == "__main__":
             ponggame.text_renderer.WORD("UP D  DOWN F",2)
             ponggame.text_renderer.WORD("PLAYER 2",4)
             ponggame.text_renderer.WORD("UP J  DOWN K",5)
+            ponggame.text_renderer.WORD(":Q TO QUIT", 6)
             pygame.display.update()
             time.sleep(5)
 
