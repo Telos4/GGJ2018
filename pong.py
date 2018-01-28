@@ -17,6 +17,7 @@ if __name__ == "__main__":
 
     obstaclebool = True
     oszi = False
+    background_sound_bool = True
     ser = None
     try:
         oszi_params = open('oszi_params.txt', 'r')
@@ -117,6 +118,11 @@ if __name__ == "__main__":
             renderer.update()
             time.sleep(1)
             splashscreen = False
+
+        if background_sound_bool:
+            background_sound = pygame.mixer.Sound("background.wav")
+            pygame.mixer.Channel(1).play(background_sound, loops = -1)
+            background_sound_bool = False
 
         for event in pygame.event.get():
             if event.type == QUIT or (event.type == KEYDOWN and event.key == K_q):
