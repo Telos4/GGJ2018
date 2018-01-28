@@ -103,12 +103,14 @@ class Pong(Game):
                 y0 = self.ball.pos[1]-(self.ball.pos[0]-player*self.renderer.windowwidth)*self.ball.movedir[1]/self.ball.movedir[0]
                 ypl = self.players[player].pos[1]
                 if  ypl < y0 < ypl+self.renderer.barsize:
-                    # play collision sound
+                    # play collision sounds
                     soundcoll = pygame.mixer.Sound("collision.wav")
                     pygame.mixer.Channel(2).play(soundcoll, loops=0, maxtime=0, fade_ms=0)
 
                     # play collision effect
-
+                    #effect_line = LineObject(self.players[player].pos, self.renderer)
+                    #self.renderer.line(self.players[player].pos, self.players[player].pos + np.array([0, 100]))
+                    #effect_line.draw()
 
 
                     self.ball.movedir = self.dirAfterCollisionPlayer(player,y0)
