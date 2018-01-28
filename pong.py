@@ -40,7 +40,7 @@ if __name__ == "__main__":
     ponggame = Pong(renderer,obstaclebool)
     pass
 
-    splashscreen = False
+    splashscreen = True
     gamerunning = True
     modscreen = True
     backsoundbool = True
