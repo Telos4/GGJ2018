@@ -64,7 +64,7 @@ if __name__ == "__main__":
                         renderer.lineto(value[n],True)
                     #renderer.lineto([0, 0], False)
                     value = []
-                    pygame.display.update()
+                    renderer.update()
                     time.sleep(2.0/60.0)
                
             #time.sleep(5)
@@ -73,23 +73,23 @@ if __name__ == "__main__":
             #Hilfsscreen
             renderer.clearscreen()
             ponggame.text_renderer.WORD("PLAYER 1",1)
-            ponggame.text_renderer.WORD("UP D  DOWN F",2)
+            ponggame.text_renderer.WORD("UP W  DOWN S",2)
             ponggame.text_renderer.WORD("PLAYER 2",4)
-            ponggame.text_renderer.WORD("UP J  DOWN K",5)
-            pygame.display.update()
+            ponggame.text_renderer.WORD("UP  DOWN",5)
+            renderer.update()
             time.sleep(5)
 
             #Modscreen
             pygame.event.clear()
             renderer.clearscreen()
-            ponggame.text_renderer.WORD("MODS", 1)
+            ponggame.text_renderer.WORD("MODES", 1)
             ponggame.text_renderer.WORD("NORMAL 1", 3)
             ponggame.text_renderer.WORD("OBSTACLES 2", 4)
+            renderer.update()
 
             while modscreen == True:
 
                 #ponggame.text_renderer.WORD("OBSTACLES SQUARES   3",4)
-                pygame.display.update()
                 #event = pygame.event.wait()
                 for event in pygame.event.get():
                     if event.type == KEYUP and event.key == K_1:
@@ -106,15 +106,15 @@ if __name__ == "__main__":
 
             renderer.clearscreen()
             ponggame.text_renderer.WORD("3",3)
-            pygame.display.update()
+            renderer.update()
             time.sleep(1)
             renderer.clearscreen()
             ponggame.text_renderer.WORD("2",3)
-            pygame.display.update()
+            renderer.update()
             time.sleep(1)
             renderer.clearscreen()
             ponggame.text_renderer.WORD("1",3)
-            pygame.display.update()
+            renderer.update()
             time.sleep(1)
             splashscreen = False
 
