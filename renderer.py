@@ -33,7 +33,7 @@ class Renderer():
             t=(ex<<16)+ey
             if not draw:
                 t+=1<<30
-            self.serial.write(t.to_bytes(4,'big'))
+            self.serial.write(t.to_bytes(4,'little'))
 
     def line(self, start_pos,end_pos):
         if self.lastpos[0] == start_pos[0] and self.lastpos[1] == start_pos[1]:
@@ -57,7 +57,7 @@ class Renderer():
     def clearscreen(self):
         self.lastpos=(0,0)
         if self.oszi:
-            self.serial.write((1<<31).to_bytes(4,'big'))
+            self.serial.write((1<<31).to_bytes(4,'little'))
         self.displaysurf.fill(self.bgcolor)
 
 

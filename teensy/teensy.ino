@@ -11,8 +11,13 @@ const short dacldacpin = 2;
 
 struct {unsigned short x=0,y=0;} currentpos;
 
-unsigned int lines[1000];
-unsigned int linecount = 0;
+#define NUMLINES 1000
+
+struct {
+  unsigned int lines[NUMLINES];
+  unsigned int linecount = 0;
+} frame[2];
+bool activeframe = 0;
 
 unsigned int lastframe=0;
 
@@ -96,29 +101,38 @@ void smallsquare(){
 //}
 
 
-void serialline() {
+void drawframe(){
   unsigned int thisframe=millis();
   if(thisframe-lastframe >= 20){
     lastframe=thisframe;
     // mylineto(1,0,0); // tragendes Poster
-    for (unsigned int i = 0; i < linecount; i++) {
-      lineto(lines[i]);
+    for (unsigned int i = 0; i < frame[activeframe].linecount; i++) {
+      lineto(frame[activeframe].lines[i]);
     }
     mylineto(1,0,0);
   }
+}
+
+void clearscreen(){
+  frame[activeframe].linecount = 0;
+  activeframe ^= 1;
+  currentpos.x=0;
+  currentpos.y=0;
+  dac2(0, 0); // Zeiger auf Oszi nach unten links bewegen
+}
+
+void serialline() {
+  drawframe();
   
   if (Serial.available() >= 4) {
-    unsigned int t = Serial.read() << 24;
-    t |= Serial.read() << 16;
-    t |= Serial.read() << 8;
-    t |= Serial.read();
+    unsigned int t;
+    Serial.readBytes((char*)(&t),4);
     if (t&(1<<31)) {
-      linecount = 0;
-      dac2(0, 0); // Zeiger auf Oszi nach unten links bewegen
+      clearscreen();
       return;
     }
-    if (linecount < 1000-1) {
-      lines[linecount++] = t;
+    if (frame[!activeframe].linecount < NUMLINES-1) {
+      frame[!activeframe].lines[frame[!activeframe].linecount++] = t;
     }
   }
 }
