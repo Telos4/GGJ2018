@@ -53,7 +53,7 @@ if __name__ == "__main__":
             pygame.mixer.Channel(3).play(sound, loops = -1)
             while time.time()<t_end:
                 value = []
-                for t in range(0,500):
+                for t in range(0,200):
                     renderer.clearscreen()
                     ponggame.text_renderer.WORD("GLOBALGAMEJAM",2)
                     ponggame.text_renderer.WORD("2018",3)
