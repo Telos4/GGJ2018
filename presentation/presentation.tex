@@ -1,0 +1,184 @@
+\documentclass{beamer}
+
+\mode<presentation>
+
+\usetheme{Singapore}
+%\usetheme{Antibes | Bergen | Berkeley |
+% Berlin | Boadilla | Copenhagen |
+% Darmstadt | default | Dresden |
+% Frankfurt | Goettingen | Hannover |
+% Ilmenau | JuanLesPins | Luebeck |
+% Madrid | Malmoe | Marburg | Montpellier |
+% Palo Alto | Pittsburgh | Rochester |
+% Singapore | Szeged | Warsaw}
+
+
+% ------------------------------------------------------
+\usecolortheme[RGB={3,138,94}]{structure} %Praesenatation in Uni Bt Gruen
+% \usecolortheme{
+% 	albatross | beaver | beetle |
+% 	crane | default | dolphin |
+% 	dove | fly | lily | orchid |
+% 	rose |seagull | seahorse |
+% 	sidebartab | structure |
+% 	whale | wolverine
+% }
+\usefonttheme{professionalfonts}
+% \usefonttheme{
+% 	default | professionalfonts | serif |
+% 	structurebold | structureitalicserif |
+% 	structuresmallcapsserif
+% }
+\useinnertheme{default}
+% \useinnertheme{
+% 	circles | default | inmargin |
+% 	rectangles | rounded
+% }
+\useoutertheme{infolines}
+% \useoutertheme{
+% 	default | infolines | miniframes |
+% 	shadow | sidebar | smoothbars |
+% 	smoothtree | split | tree
+% }
+\beamertemplatenavigationsymbolsempty
+%\setbeamercovered{transparent}
+
+\makeatother
+\setbeamertemplate{footline}
+{
+\leavevmode
+\hbox{
+ \begin{beamercolorbox}[wd=\paperwidth,ht=2.5ex,dp=1.125ex,leftskip=.3cm,rightskip=.3cm plus1fil]{footlinecolor}%
+    \usebeamerfont{author in head/foot}\insertshortauthor\hfill\insertframenumber / \inserttotalframenumber
+  \end{beamercolorbox}
+}
+\vskip0pt
+}
+\makeatletter
+% -------%--------------------------------------------------
+
+%\usepackage[ngerman,german]{babel}
+\usepackage[latin1]{inputenc}
+%\usepackage{times}
+\usepackage{amssymb, amscd, amstext, amsmath, amsthm}
+\usepackage{graphicx}
+\usepackage{color}
+
+\usepackage{tikz}
+\usepackage{verbatim}
+%\usepackage[active,tightpage]{preview}
+%\PreviewEnvironment{tikzpicture}
+\usetikzlibrary{decorations.pathreplacing}
+\usetikzlibrary{arrows}
+\usetikzlibrary{shapes.misc}
+\tikzset{cross/.style={cross out, draw=black, minimum size=2*(#1-\pgflinewidth), inner sep=0pt, outer sep=0pt},
+%default radius will be 1pt. 
+cross/.default={2.5pt}}
+
+
+\usepackage{epstopdf}
+\usepackage[backend=bibtex]{biblatex}
+%\addbibresource{../../papers/bibtex.bib}
+\bibliography{bibtex.bib} % Input your bibliography file
+\bibstyle{plain}
+
+
+% ------------------------------------------------------------------
+
+\graphicspath{{figures/}}
+
+% ---------------------------------------------------------------
+
+\newcommand<>{\uncoverubrace}[2]{%
+  \onslide#3 \underbrace{ \onslide<1->%
+  #1%
+  \onslide#3 }_{#2} \onslide<1->%
+}
+\newcommand<>{\uncoverobrace}[2]{%
+  \onslide#3 \overbrace{ \onslide<1->%
+  #1%
+  \onslide#3 }^{#2} \onslide<1->%
+}
+
+% ---------------------------------------------------------------
+
+\def\argmin{\mathop{\mathrm{argmin}}}
+\def\Red{\textcolor{red}}
+\def\Blue{\textcolor{blue}}
+\def\Black{\textcolor{black}}
+
+\newtheorem{proposition}{Proposition}
+\setbeamertemplate{theorems}[numbered]
+%\newtheorem{lemma}{Lemma}
+
+
+\definecolor{unigruen}{RGB}{3,138,94}
+\definecolor{olivegreen}{rgb}{0.2,0.4,0.2}
+\definecolor{darkgreen}{rgb}{0.0,0.5,0.0}
+
+%\setbeamercolor{math text}{fg=olivegreen}
+
+
+%\renewcommand*{\bibfont}{\scriptsize}
+%\newcommand\footcite[1]{\footnote{\bibentry{#1}}\label{\thepage:#1}}
+
+% ----------------------------------------------------------------
+
+% Titel
+\title[Oszipong]{Oszipong}
+\author{Clemens, Daniel, Nico, Simon, Sofie, Stephan}
+\institute[Hackerspace]{imagin\"arraum (Hackerspace Bayreuth)}
+%\titlegraphic{\includegraphics[height=1cm]{logo_gruen_schwarz}}
+%\titlegraphic{\includegraphics[height=1cm]{logo_gruen_schwarz}
+%\hspace{0.75cm}
+%}
+\date{10th Global Game Jam\\[1em]
+January 28th, 2018 \\[0.5em]
+}
+
+% -------------------------------------------------------------
+
+\begin{document}
+
+\begin{frame}[plain]
+\titlepage
+\end{frame}
+% -------------------------------------------------------------
+\begin{frame}[noframenumbering]{Outline}
+\tableofcontents
+%[pausesections]
+\end{frame}
+% --------------------------------------------------------------
+
+
+% --------------------------------------------------------------
+\section{Introduction}
+\begin{frame}
+frame 1
+\end{frame}
+
+
+
+
+% --------------------------------------------------------------
+\section{Conclusion}
+%------------------------------------------------------------
+\begin{frame}{Summary, remarks and future work}
+\end{frame}
+
+
+\begin{frame}{References}
+\begin{tiny}
+%\footnotesize
+%\scriptsize
+\printbibliography
+\end{tiny}
+\end{frame}
+
+\begin{frame}
+\begin{center}
+\end{center}
+\end{frame}
+
+%
+\end{document}
