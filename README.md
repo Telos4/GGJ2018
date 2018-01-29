@@ -5,12 +5,12 @@ Two players may play this game competitively, trying to force the ball in the en
 
 
 # Requirements:
-# Hardware:
+## Hardware:
 - oscilloscope (analog, x-y-mode)
 - Teensy 3.2
 - MCP 4922
 
-# Software:
+## Software:
 - Arduino IDE with teensy plugin
 - Python 3 with pygame, numpy and pyserial modules
 
