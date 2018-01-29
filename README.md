@@ -19,7 +19,7 @@ Two players may play this game competitively, trying to force the ball in the en
 - Set up the circuit as in the article from the 'Make' (see below)
 - Flash the firmware in the teensy/ subdirectory using the Arduino IDE with the teensy plugin installed
 - Add the appropriate serial port for communication with the teensy to the osziparams.txt file
-- To start the game use: python3 src/pong.py
+- To start the game use: ./run.sh
 
 
 # References:
